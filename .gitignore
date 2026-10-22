@@ -11,3 +11,6 @@ wheels/
 
 # Environment file
 .env
+
+# Lecture slides
+docs/5.1-workshop-slides.pdf
