@@ -39,16 +39,20 @@ uv run pytest                    # run the tests
   branch. All checks must pass before the pull request is ready for review.
 - Run `uv run ruff check`, `uv run mypy`, and `uv run pytest` after changes,
   and report their actual results.
-- Push the branch and open a pull request targeting main. Use the repository's
-  pull request template with Summary and Test plan sections. Explain what
-  changed, why, and the related proposal requirement when applicable.
+- Push the branch and open a pull request targeting main with `gh pr create`.
+  Use the repository's pull request template with `## Summary` and
+  `## Test plan` sections. Explain what changed and why, citing the relevant
+  section of `docs/proposal.md`. For maintenance changes, explain why no
+  proposal feature or acceptance criterion is affected.
 - Check a test-plan item only after running it successfully. Distinguish local
   results from GitHub Actions results. Leave human review items unchecked.
-- Verify that GitHub Actions passes for the latest pull request revision.
+- After pushing, run `gh pr checks --watch` and report the result for the latest
+  pull request revision. Verify that GitHub Actions passes before marking the
+  pull request ready for review.
 - Leave the pull request for the project owner's review of the diff and intended
   behavior. External approval is not required for this solo project.
-  Do not merge unless explicitly instructed.
-- Use squash and merge after checks and human review are complete.
+- Never merge a pull request. The project owner performs squash and merge
+  after reviewing the diff and confirming that checks pass.
 
 GitHub's active main-branch rules require a pull request, a passing `tests` check
 from GitHub Actions against the latest main, and squash merging, with no bypass
