@@ -60,6 +60,30 @@ uv run pytest                    # run the tests
   are visible, and documentation matches the change. Leave the owner's review
   pending so they can ask questions and explain the behavior in their own words.
 
+## Visual conventions and assets
+
+- Keep published visuals in `docs/assets/proposal/` for proposal illustrations
+  and `docs/assets/project/` for explanations of the current system. Create
+  folders only when needed. Keep experiments outside the repository.
+- Keep editable sources (such as `.excalidraw`) beside their published SVG or
+  PNG, with matching descriptive names. Commit only the formats used by the
+  documentation plus their sources, not temporary previews or unused variations.
+  Record a generated illustration's final prompt and available model/settings
+  in its PR so future revisions have a starting point.
+- Use Excalidraw for workflows and structure; use annotated illustrations for
+  concepts and decisions. Keep labels short and in plain English. Show user
+  actions, application responses, decisions, and outcomes in reading order;
+  separate user and technical views when combining them would be crowded.
+- Use light blue (`#eaf3ff`) for working behavior, amber (`#fff1d9`) for
+  placeholders or pending review, and gray (`#f8fafc`) for planned behavior.
+  Always include explicit status labels; color alone must not convey meaning.
+  Label planned connections, too. Keep text readable and include a caption
+  and text equivalent, following the maintainability guidance above.
+- Frontend styles belong with application code. Update diagrams when the
+  behavior they explain changes; cosmetic frontend changes do not require
+  redrawing them. Reuse existing visuals and keep guidance here rather than
+  adding a separate style document.
+
 ## Git workflow
 
 - Start each new change from the latest main on a descriptive branch.
