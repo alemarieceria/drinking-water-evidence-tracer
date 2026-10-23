@@ -48,6 +48,12 @@ uv run pytest                    # run the tests
 - Keep documentation focused: the proposal defines intent, code implements
   behavior, tests verify examples, and the project map explains the current
   system. Link to existing sources instead of repeating full specifications.
+- Keep documentation concise and organized by purpose. Aim for roughly 100-200
+  lines in the project map; review its structure around 250-300 lines. Remove
+  duplication and outdated content before splitting it. Create another document
+  only for a distinct topic that needs its own explanation, and link it from
+  the overview. Treat line counts as review signals, not reasons to remove
+  necessary information. Keep change-specific details in pull requests.
 - Record significant lasting choices in the project map's decision record,
   including rationale, alternatives actually considered, consequences, and the
   relevant PR. Add entries for meaningful decisions, not every commit.
