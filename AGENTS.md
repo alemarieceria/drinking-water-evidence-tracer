@@ -48,6 +48,12 @@ uv run pytest                    # run the tests
 - Keep documentation focused: the proposal defines intent, code implements
   behavior, tests verify examples, and the project map explains the current
   system. Link to existing sources instead of repeating full specifications.
+- Keep documentation concise and organized by purpose. Aim for roughly 100-200
+  lines in the project map; review its structure around 250-300 lines. Remove
+  duplication and outdated content before splitting it. Create another document
+  only for a distinct topic that needs its own explanation, and link it from
+  the overview. Treat line counts as review signals, not reasons to remove
+  necessary information. Keep change-specific details in pull requests.
 - Record significant lasting choices in the project map's decision record,
   including rationale, alternatives actually considered, consequences, and the
   relevant PR. Add entries for meaningful decisions, not every commit.
@@ -62,6 +68,13 @@ uv run pytest                    # run the tests
 
 ## Visual conventions and assets
 
+- Use the chosen clean, structured style (option B) for both diagrams and
+  annotated illustrations: white backgrounds, spacious layouts, crisp consistent
+  outlines, muted colors, and regular sans-serif lettering for all labels.
+  Illustrations may use characters to explain concepts while keeping the same
+  lettering, palette, and line treatment. Follow these project conventions when
+  a skill's default aesthetic differs. Accessibility requires the checks below;
+  do not infer it from a font or visual style alone.
 - Keep published visuals in `docs/assets/proposal/` for proposal illustrations
   and `docs/assets/project/` for explanations of the current system. Create
   folders only when needed. Keep experiments outside the repository.
@@ -79,6 +92,18 @@ uv run pytest                    # run the tests
   Always include explicit status labels; color alone must not convey meaning.
   Label planned connections, too. Keep text readable and include a caption
   and text equivalent, following the maintainability guidance above.
+- For published visuals, follow [W3C image guidance](https://www.w3.org/WAI/tutorials/images/complex/):
+  provide meaningful alt text and a visible text equivalent of essential steps,
+  relationships, decisions, and values. Prefer real text to text embedded only
+  in an image. Use at least 4.5:1 contrast for informative text and 3:1 for
+  meaningful lines, symbols, and boundaries against adjacent colors. Pale
+  fills are supplementary; pair them with dark labels and meaningful outlines.
+  Check the actual export at its displayed size, provide a full-size option,
+  and preserve readable text when zoomed. HTML viewers must support keyboard
+  use, visible focus, and readable text at narrow widths. Verify screen-reader
+  and zoom behavior before claiming accessibility conformance; record what
+  was actually checked. Do not assume editable SVG or AI-generated art is
+  accessible by itself.
 - Frontend styles belong with application code. Update diagrams when the
   behavior they explain changes; cosmetic frontend changes do not require
   redrawing them. Reuse existing visuals and keep guidance here rather than
