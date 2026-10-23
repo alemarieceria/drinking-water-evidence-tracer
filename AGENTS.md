@@ -68,10 +68,13 @@ uv run pytest                    # run the tests
 
 ## Visual conventions and assets
 
-- Use the chosen research-notebook style: white backgrounds, spacious layouts,
-  gentle hand-drawn outlines, and muted colors. Keep critical instructions,
-  scientific values, units, and identifiers in clear regular lettering;
-  reserve handwriting for brief annotations. Characters should explain a concept.
+- Use the chosen clean, structured style (option B) for both diagrams and
+  annotated illustrations: white backgrounds, spacious layouts, crisp consistent
+  outlines, muted colors, and regular sans-serif lettering for all labels.
+  Illustrations may use characters to explain concepts while keeping the same
+  lettering, palette, and line treatment. Follow these project conventions when
+  a skill's default aesthetic differs. Accessibility requires the checks below;
+  do not infer it from a font or visual style alone.
 - Keep published visuals in `docs/assets/proposal/` for proposal illustrations
   and `docs/assets/project/` for explanations of the current system. Create
   folders only when needed. Keep experiments outside the repository.
