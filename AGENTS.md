@@ -28,6 +28,38 @@ uv run pytest                    # run the tests
 - Never weaken a check: no raised max-complexity, no
   # noqa or # type: ignore, no skipped tests.
 
+## Maintainability and human understanding
+
+- Before meaningful work, explain the purpose, a concrete example, and where
+  the change fits in plain English. Use a small diagram when it helps. Report
+  progress in terms of behavior, evidence, and remaining work.
+- Give each module a clear responsibility and explicit inputs, outputs, and
+  assumptions. Prefer small functions and clear names. Introduce abstractions,
+  dependencies, and new files only for a concrete need; explain the trade-off.
+- Keep rules separate from routes, model calls, and storage, following Layout.
+  Tests should check behavior and important boundaries without real model calls.
+- Preserve reproducibility with `uv.lock`, documented setup, and representative
+  inputs with expected outputs. Explain configuration without exposing secrets.
+  When model extraction is introduced, preserve source document versions,
+  prompt/model versions, settings, outputs, and review decisions; reruns may vary.
+- Keep [docs/project-map.md](docs/project-map.md) accurate when structure,
+  processing, capabilities, or setup changes. Label implemented, placeholder,
+  and planned behavior explicitly, including connections between components.
+- Keep documentation focused: the proposal defines intent, code implements
+  behavior, tests verify examples, and the project map explains the current
+  system. Link to existing sources instead of repeating full specifications.
+- Record significant lasting choices in the project map's decision record,
+  including rationale, alternatives actually considered, consequences, and the
+  relevant PR. Add entries for meaningful decisions, not every commit.
+- PR summaries should include a plain-English explanation, an input/output
+  example when applicable, and scope or remaining limitations. Visuals are
+  optional and reusable; prefer editable diagrams for processing and structure,
+  and illustrations for concepts. Include a text caption and text equivalents
+  for visuals, and distinguish intended workflow from implemented behavior.
+- Before marking a PR ready, verify that tests pass, assumptions and limitations
+  are visible, and documentation matches the change. Leave the owner's review
+  pending so they can ask questions and explain the behavior in their own words.
+
 ## Git workflow
 
 - Start each new change from the latest main on a descriptive branch.
