@@ -40,7 +40,7 @@ User outcome: the researcher sees every documented result for a sample or analyt
 
 ## 6. Big-picture sketch
 
-![Big-picture screen sketch](../big-picture-sketch.svg)
+![Big-picture screen sketch](assets/big-picture-sketch.svg)
 
 Areas: (1) find a sample or analyte; the header shows location, address, zone, collection date, and number of batches; (2) analyte inventory (Feature 1); (3) trace (Feature 2), with the example Lead row highlighted; (4) review on the source page: confirm, correct, or flag; (5) saved evidence sets (Feature 3). Open question (?): whether a map view belongs in a later version.
 
@@ -48,9 +48,9 @@ Areas: (1) find a sample or analyte; the header shows location, address, zone, c
 
 Tracing HT03 through both diagrams: the LLM classifies pub_002925 p. 10 as client sample results and extracts "Lead, 0.27 J, RL 0.50," which matches the Detection Summary on p. 7; a reviewer confirms it. With no validation qualifier, the rules compare "0.27 J" with the summary's "0.270," return qualifier dropped, and show the flag in sketch area 3.
 
-![Workflow flow diagram](../workflow-flow.svg)
+![Workflow flow diagram](assets/workflow-flow.svg)
 
-![Component diagram](../component-diagram.svg)
+![Component diagram](assets/component-diagram.svg)
 
 ## 8. Data source and access
 
