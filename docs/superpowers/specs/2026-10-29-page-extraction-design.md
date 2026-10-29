@@ -60,6 +60,28 @@ an investigation, not a claim established by these two examples.
    The researcher can inspect and rerun with revised input; each submission gets
    a new run ID. There are no confirm/correct/flag or evidence-export controls.
 
+### Exploring returned rows
+
+Provide case-insensitive search across field/lab sample IDs, analyte, method,
+source result text, units, qualifiers, and limits. Whitespace-separated search
+terms must all occur somewhere in a row. Combine search with filters for sample,
+numeric detection versus nondetect, printed qualifier, and missing/unclear fields.
+These are browser view controls over the returned rows, not retrieval, model calls,
+cross-document matching, or edits to extraction/review status.
+
+Column headings sort field sample, analyte, result text, qualifier, and measured
+concentration; activating a heading again reverses its order. Distinguish sorting
+source result text from sorting measured concentrations. Numeric sorting compares
+decimal values within identical reported units without precision loss or conversion;
+nondetects and absent measured concentrations remain last in either direction.
+Preserve source order for ties. A reset restores all rows and their source order.
+
+Keep total rows returned separate from rows currently shown, announce changes,
+and explain an empty filtered view as “no rows match” rather than “no detections.”
+Sorting/filtering must preserve each row's sample, citation, and detail association.
+Keep the selected row if visible; otherwise select the first visible row, or hide
+details when no rows match. A newly returned run resets the view controls.
+
 Clear the previous displayed output when a new submission begins, or retain it
 only in an explicitly labeled previous-run area. An error must not make old output
 look like the response to edited input. Retrying is always a deliberate submission.
@@ -237,6 +259,8 @@ retries; never permit real provider requests in tests. Exercise request-to-respo
 handling, sample boundaries, nulls, separate qualifiers, nondetect interpretation,
 unsupported/empty pages, sanitization, limits, and storage failures. Check model
 inputs contain the supplied context, rather than merely replaying canned output.
+Verify combined table filters, filtered-versus-total counts, decimal numeric sort
+with nondetects last in both directions, reset, and correct detail associations.
 
 Offline wiring tests do not establish model accuracy. A separately invoked manual
 experiment, outside pytest and CI, can compare real model outputs against the
