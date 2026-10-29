@@ -15,6 +15,11 @@ defines the intended product; this map describes the code that exists today.
 - **Planned:** reading PDF contents, model extraction, record matching, unit conversion,
   applying real flags, human-review actions, storage, and evidence export.
 
+The [proposed one-page extraction design](superpowers/specs/2026-10-29-page-extraction-design.md)
+describes the next experiment: pasted page text to unconfirmed model-extracted
+rows, with local run records and no retrieval or database. It is a design for review,
+not implemented behavior. The proposal's sections 10 and 19 define its scope.
+
 ## Current processing
 
 ```mermaid
