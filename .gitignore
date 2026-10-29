@@ -13,4 +13,4 @@ wheels/
 .env
 
 # Lecture slides
-docs/5.1-workshop-slides.pdf
+docs/_internal/
