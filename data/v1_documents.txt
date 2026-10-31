@@ -1,0 +1,51 @@
+# Version 1 source set (proposal section 8): 27 PDFs, listed by archive doc_id.
+# Each doc_id is a row in the archive's registry/documents.csv, which records the
+# file's location and fingerprint. One doc_id per line; "#" starts a comment.
+# Check the set with: uv run python -m app.archive
+
+# 810-12264-1 (Eurofins South Bend): complete chain
+DOC-0010  # Lab report, Level 4 (pub_002925)
+DOC-0032  # Lab report, Level 2 (pub_002947)
+DOC-0070  # Validation report (pub_002985)
+DOC-0101  # Review report (pub_003016)
+
+# 810-12460-1 (Eurofins South Bend): revisions, sample input row 7
+DOC-0013  # Lab report, Level 3, Revision 1 (pub_002928)
+DOC-0073  # Validation report, listed as duplicate upload (2) (pub_002988)
+DOC-0074  # Validation report (pub_002989)
+DOC-0104  # Review report (pub_003019)
+
+# DA40928 (SGS): qualifiers, sample input row 6
+DOC-0054  # Lab report (pub_002969)
+DOC-0083  # Validation report (pub_002998)
+DOC-0117  # Review report (pub_003032)
+
+# 2A19069 (Weck) and 580-109487-2 (Eurofins Seattle): no validation report, row 8
+DOC-0020  # Lab report, 2A19069 (pub_002935)
+DOC-0028  # Lab report, 580-109487-2 (pub_002943)
+
+# C22A016 (EPA mobile lab): HT03 and JT05
+DOC-0041  # Lab report, Revision 2 (pub_002956)
+DOC-0077  # Validation report (pub_002992)
+DOC-0111  # Review report (pub_003026)
+
+# 580-109324-1 (Eurofins Seattle): HT03 and JT05
+DOC-0025  # Lab report (pub_002940)
+DOC-0065  # Validation report (pub_002980)
+DOC-0107  # Review report (pub_003022)
+
+# 2A14029 (Weck): HT03 and JT05
+DOC-0016  # Lab report (pub_002931)
+DOC-0061  # Validation report (pub_002976)
+DOC-0095  # Review report (pub_003010)
+
+# DA40915 (SGS): HT03 and JT05
+DOC-0049  # Lab report (pub_002964)
+DOC-0081  # Validation report (pub_002996)
+DOC-0115  # Review report (pub_003030)
+
+# DA40955 (SGS): validation report only, row 9
+DOC-0085  # Validation report (pub_003000)
+
+# Navy summary table: comparison target
+DOC-0005  # Sampling Results for Zone I1 Emergency Response, 07 March 2022
