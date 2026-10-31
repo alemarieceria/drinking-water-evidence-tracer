@@ -8,6 +8,8 @@ Drinking Water Evidence Tracer is a research tool that helps environmental resea
 - app/agent.py: the Pydantic AI agent and output model.
 - app/rules.py: rules in plain Python. No FastAPI,
   no LLM client.
+- app/archive.py: finds source PDFs through the
+  archive catalog. No FastAPI, no LLM client.
 - This is the starting layout. When a module
   takes on a second responsibility, split it by
   responsibility (for example, `app/rules.py`

@@ -20,7 +20,7 @@ A researcher selects sample 220113-I1-HT03 and asks to trace its results. The ap
 
 ## 4. Sample input set
 
-Nine real inputs (none synthetic), drawn from 27 public PDFs in the repository's `data/reports/v1/`. Row 1 checks that the application does not flag everything.
+Nine real inputs (none synthetic), drawn from 27 public PDFs in the project's document archive, listed in `data/v1_documents.txt`. Row 1 checks that the application does not flag everything.
 
 | ID | Input | Expected result |
 | --- | --- | --- |
@@ -69,6 +69,8 @@ Version 1 set (27 PDFs):
 | C22A016 (EPA mobile lab); 580-109324-1 (Eurofins Seattle); 2A14029 (Weck); DA40915 (SGS) | Lab report, validation, and review for each | Complete HT03 and JT05 |
 | DA40955 (SGS) | Validation report only | Not in the listing (row 9) |
 | — | Navy summary; Stage 4 document list (109 entries) | Comparison target; listing check |
+
+Storage: the PDFs are kept once, in a separate document archive (a Google Shared Drive) whose catalog records each file's source URL, download time, and SHA-256 fingerprint. `data/v1_documents.txt` lists the version 1 set by catalog ID, and the application finds the files through the catalog, skipping entries marked as duplicates. The Stage 4 document list check uses the catalog's rows for the 109 listed documents.
 
 Access: public PDF downloads; I compiled the location file from the dashboard and zone plan. Permissions: none needed; no login. Sensitivity: no non-public data and no names; the application stores the street addresses that the summary and dashboard publicly list, with their coordinates.
 
