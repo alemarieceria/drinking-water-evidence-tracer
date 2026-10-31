@@ -157,6 +157,6 @@ Decision to make: whether a map view belongs in a later version. Technical detai
 
 - Biggest uncertainty: whether LLM extraction is accurate enough across lab formats that review is a check rather than retyping.
 - Who or what can answer it: an experiment on the results pages of the five lab formats in the version 1 set (batches 810-12264-1, DA40928, 2A19069, 580-109487-2, and C22A016), compared with hand-checked values.
-- Initial development fixtures are one multiple-sample nondetect page from `pub_00002948.pdf` (batch 810-12365-1) and one mixed detected/J-qualified/ND page from the Stage 2 combined laboratory release. These test extraction mechanics only; they do not expand the version 1 batch, zone, or stage scope or establish accuracy across the five intended formats.
+- Initial development fixtures are one multiple-sample nondetect page from archive document `DOC-0033` (`pub_002948.pdf`, batch 810-12365-1) and one mixed detected/J-qualified/ND page from the Stage 2 combined laboratory release. These test extraction mechanics only; they do not expand the version 1 batch, zone, or stage scope or establish accuracy across the five intended formats.
 - Evidence to collect: field-level accuracy for value, qualifier, reporting limit, and units per format; errors the cross-check caught and errors that slipped through.
 - Effect on scope: high accuracy keeps all five formats; a weak format is dropped or gets its own extraction template; poor accuracy overall narrows version 1 to batch 810-12264-1.

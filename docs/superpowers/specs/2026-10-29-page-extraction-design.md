@@ -65,13 +65,13 @@ No claim of extraction accuracy across all five laboratory formats is made.
 
 | Development input | What it checks |
 | --- | --- |
-| `pub_00002948.pdf`, p. 6; definitions p. 3 | 21 rows, three sample identities, less-than values, separate limits, and exclusion of surrogate rows. |
+| Archive `DOC-0033` (`pub_002948.pdf`, batch 810-12365-1), p. 6; definitions p. 3 | 21 rows, three sample identities, less-than values, separate limits, and exclusion of surrogate rows. |
 | Stage 2 combined laboratory release, p. 7; definitions p. 16 | 35 rows with ordinary detections, J qualifiers, ND/U results, and a missing MDL that must not be invented. |
 
 These are development fixtures only: neither expands the proposal's version-one
 corpus. The Stage 2 example is also outside Zone I1. Preserve source versions and
 hand-checked expectations with the fixtures; tests must not depend on a neighboring
-checkout or read its `v1/` folder.
+checkout or on the Shared Drive archive.
 
 Offline tests block real model requests and check field handling, sample boundaries,
 table controls, failures, and local run records. Check keyboard use, focus, zoom,
