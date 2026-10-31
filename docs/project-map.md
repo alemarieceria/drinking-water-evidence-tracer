@@ -106,7 +106,7 @@ sections [10-11](proposal.md#10-llm-role), [14](proposal.md#14-human-review), an
 | [pyproject.toml](../pyproject.toml) / [uv.lock](../uv.lock) | Dependency declarations, locked versions, and check configuration. |
 | [AGENTS.md](../AGENTS.md) / [CLAUDE.md](../CLAUDE.md) | Shared contributor instructions; CLAUDE.md points to AGENTS.md. |
 | [.agents/skills/](../.agents/skills/README.md) | Implemented: 15 project-local Superpowers skills and their supporting files, with the upstream revision and license recorded. These guide coding agents; they are not application processing. |
-| [docs/assets/proposal/](assets/proposal/) | Proposal visuals and their available editable sources. Future published current-system visuals belong in `docs/assets/project/`; local trials stay outside the repository. |
+| [docs/assets/proposal/](assets/proposal/) / [docs/assets/project/](assets/project/) | Proposal and system visuals with their editable sources. The extraction design's flow is explicitly planned; local trials stay outside the repository. |
 
 The root [main.py](../main.py) is the original greeting script. Start the web
 application with `app/main.py` as shown below.
