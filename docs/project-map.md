@@ -8,9 +8,11 @@ defines the intended product; this map describes the code that exists today.
 
 - **Implemented:** a page, JSON request/response models (definitions of the fields
   exchanged with the page), and a numeric disagreement rule tested on its own.
+- **Implemented:** finding the version 1 source PDFs through the document archive's
+  catalog and checking that each file is unchanged. The page does not use them yet.
 - **Placeholder:** every valid search returns the same HT03 lead example. The
   displayed flags, source preview, and inventory are fixed demonstration content.
-- **Planned:** reading PDFs, model extraction, record matching, unit conversion,
+- **Planned:** reading PDF contents, model extraction, record matching, unit conversion,
   applying real flags, human-review actions, storage, and evidence export.
 
 ## Current processing
@@ -45,6 +47,24 @@ The page does not call this function. It does not match samples, convert units,
 round values, confirm a result, or enforce inventory/export restrictions.
 The report's Detection Summary is distinct from the Navy's combined summary table.
 
+### Finding source PDFs
+
+The PDFs are not stored in this repository. They live in the project's document
+archive (a Google Shared Drive), whose catalog, `registry/documents.csv`, has one row
+per file with its location and SHA-256 fingerprint (a code that changes if any byte
+of the file changes). [`app/archive.py`](../app/archive.py) reads that catalog:
+
+1. `ARCHIVE_ROOT` in `.env` names the archive folder.
+2. [`data/v1_documents.txt`](../data/v1_documents.txt) lists the version 1 set by
+   catalog ID, for example `DOC-0010`, the Level 4 lab report pub_002925.
+3. The catalog lookup keeps only downloaded files and skips rows whose
+   `duplicate_of` column is filled, so a duplicate upload is never processed twice.
+4. The check recomputes each fingerprint and reports missing or changed files.
+
+`uv run python -m app.archive` runs these steps for the version 1 set and prints
+`27 documents found in ...; all files present and unchanged.` or a list of problems.
+Nothing reads the PDFs' contents yet.
+
 ## Intended processing and remaining work
 
 ```mermaid
@@ -71,8 +91,12 @@ sections [10-11](proposal.md#10-llm-role), [14](proposal.md#14-human-review), an
 | [app/main.py](../app/main.py) | Web entry point: page, browser script, routes, and fixed response. |
 | [app/agent.py](../app/agent.py) | Input/output field models; no agent or model call is initialized. |
 | [app/rules.py](../app/rules.py) | Plain-Python evidence decisions; currently one numeric comparison. |
+| [app/archive.py](../app/archive.py) | Finds source PDFs through the archive catalog and checks their fingerprints. |
+| [data/v1_documents.txt](../data/v1_documents.txt) | Catalog IDs of the 27 version 1 PDFs, grouped by batch. |
 | [tests/test_skeleton.py](../tests/test_skeleton.py) | Page/form and endpoint field checks; real model requests are blocked. |
 | [tests/test_rules.py](../tests/test_rules.py) | Numeric mismatch and equality examples. |
+| [tests/test_archive.py](../tests/test_archive.py) | Catalog lookups against a temporary catalog; needs no Shared Drive. |
+| [.env.example](../.env.example) | Names the settings `.env` needs, without real values. |
 | [.github/workflows/tests.yml](../.github/workflows/tests.yml) | Installs locked dependencies and runs lint, type checks, and tests in CI. |
 | [pyproject.toml](../pyproject.toml) / [uv.lock](../uv.lock) | Dependency declarations, locked versions, and check configuration. |
 | [AGENTS.md](../AGENTS.md) / [CLAUDE.md](../CLAUDE.md) | Shared contributor instructions; CLAUDE.md points to AGENTS.md. |
@@ -105,7 +129,15 @@ uv run pytest
 
 Ruff checks code quality; mypy checks declared types (currently scoped to `app/`);
 pytest runs behavior checks. CI runs the same three commands. The current tests
-run without real model calls. The current app needs no API credentials or PDF data.
+run without real model calls or the archive. The current app needs no API credentials.
+
+To check the source PDFs, copy the `ARCHIVE_ROOT` line from
+[.env.example](../.env.example) into `.env`, adjust the path if your Shared Drive
+letter differs, and run:
+
+```bash
+uv run python -m app.archive
+```
 `--locked` makes dependency setup fail if the lockfile needs updating, rather than
 silently changing it. See [uv's sync documentation](https://docs.astral.sh/uv/concepts/projects/sync/).
 
@@ -123,6 +155,7 @@ choices are documented in the proposal and merged PRs:
 | --- | --- | --- |
 | Keep domain decisions in plain Python, separate from model extraction, so tests can check them exactly. | The caller must handle extraction, matching, and applying decisions. | Proposal section 10; [first rule PR](https://github.com/alemarieceria/drinking-water-evidence-tracer/pull/3). |
 | Start with a fixed response to establish the page and data shapes. | Displayed data is illustrative until real processing is connected. | [Skeleton commit](https://github.com/alemarieceria/drinking-water-evidence-tracer/commit/653447a). |
+| Find source PDFs through the document archive's catalog, keeping one fingerprinted copy with its source and download time. The alternative considered was hand-copied PDFs in `data/reports/v1/`, which had no recorded source or fingerprint and duplicated the archive. | Checking real files needs the Shared Drive available; tests use a temporary catalog. The catalog's `duplicate_of` column decides which copy is processed. | Archive catalog PR (this change). |
 
 Update this map when capabilities, connections, setup, or responsibilities change.
 Keep detailed requirements in the proposal and change-specific reasoning in PRs.
