@@ -17,8 +17,8 @@ defines the intended product; this map describes the code that exists today.
   model-row source references; this does not prove completeness or correct sample attachment.
 - **Implemented in isolation:** bounded model calls with captured messages, explicit
   gateway/model configuration, and a global offline-test guard. Live accuracy is unmeasured.
-- **Implemented in isolation:** the extraction service connects these steps and
-  saves atomic JSON run records, including failures. Its routes are still planned.
+- **Implemented:** `/extract` connects these steps, displays draft rows beside
+  source text, and saves atomic JSON run records, including failures.
 - **Placeholder:** every valid search returns the same HT03 lead example. The
   displayed flags, source preview, and inventory are fixed demonstration content.
 - **Planned:** reading PDF contents, model extraction, record matching, unit conversion,
@@ -28,7 +28,7 @@ The [one-page extraction design](superpowers/specs/2026-10-29-page-extraction-de
 describes the next experiment: one archived page, chosen by catalog ID, to
 unconfirmed model-extracted rows, with local run records and no retrieval or database.
 The [implementation plan](superpowers/plans/2026-11-05-page-extraction.md) is for
-review history is kept in Git; page integration and live scoring remain planned. The proposal's sections
+review history is kept in Git; live scoring is still being implemented. The proposal's sections
 10 and 19 define its scope.
 
 ## Current processing
@@ -106,6 +106,7 @@ sections [10-11](proposal.md#10-llm-role), [14](proposal.md#14-human-review), an
 | File | Responsibility |
 | --- | --- |
 | [app/main.py](../app/main.py) | Web entry point: page, browser script, routes, and fixed response. |
+| [app/extraction_page.html](../app/extraction_page.html) / [app/static/extraction.js](../app/static/extraction.js) | Separate extraction page, plain-text rendering, row details, and stale-response protection. |
 | [app/agent.py](../app/agent.py) | Bounded model extraction and captured messages; initialized only for an extraction request. |
 | [app/models.py](../app/models.py) | Shared data contracts; raw numeric strings and unconfirmed review status. |
 | [app/rules.py](../app/rules.py) | Numeric disagreement, detection/nondetect interpretation, and source-reference checks. |
@@ -150,7 +151,14 @@ uv run pytest
 
 Ruff checks code quality; mypy checks declared types (currently scoped to `app/`);
 pytest runs behavior checks. CI runs the same three commands. The current tests
-run without real model calls or the archive. The current app needs no API credentials.
+run without real model calls or the archive. The demonstration needs no credentials;
+`/extract` also requires ARCHIVE_ROOT, LLM_API_GATEWAY (an HTTP(S) API base URL),
+LLM_API_TOKEN, and an explicitly selected LLM_MODEL from the environment or local .env.
+
+Frontend state tests use Node 22+ and a locked, development-only jsdom dependency:
+`npm ci --prefix tests/browser` then `npm test --prefix tests/browser`.
+CI runs these tests too. They verify stale/error handling and text rendering;
+they do not establish visual layout, keyboard, zoom, or screen-reader behavior.
 
 To check the source PDFs, copy the `ARCHIVE_ROOT` line from
 [.env.example](../.env.example) into `.env`, adjust the path if your Shared Drive

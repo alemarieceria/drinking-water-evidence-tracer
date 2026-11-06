@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Extract one page · Drinking Water Evidence Tracer</title>
+  <style>
+    :root{font:100%/1.5 system-ui,sans-serif;color:#18283b;background:#f8fafc}
+    *{box-sizing:border-box}body{margin:0}main{max-width:90rem;margin:auto;padding:clamp(1rem,3vw,2.5rem)}
+    h1,h2,h3{line-height:1.25}h1{margin-bottom:.5rem}a{color:#164e91}p{max-width:75ch}
+    .muted{color:#475569}.notice{background:#fff1d9;border:1px solid #8a5a17;padding:1rem;border-radius:.5rem}
+    form,.panel{background:white;border:1px solid #64748b;border-radius:.5rem;padding:1.25rem;margin:1.25rem 0}
+    .fields{display:grid;grid-template-columns:2fr 1fr 1fr;gap:1rem}label{display:block;font-weight:600}
+    input,button{font:inherit}input{width:100%;min-width:0;margin-top:.4rem;padding:.6rem;border:1px solid #64748b;border-radius:.25rem}
+    button{background:#164e91;color:white;border:1px solid #164e91;border-radius:.3rem;padding:.6rem 1rem;cursor:pointer}
+    form button{margin-top:1rem}button:disabled{background:#475569;cursor:wait}
+    :focus-visible{outline:3px solid #9a3412;outline-offset:3px}
+    .columns{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.3fr);gap:1.25rem;align-items:start}
+    .columns>.panel{min-width:0;margin-top:0}.source-text{overflow:auto;max-height:42rem;background:#f8fafc;padding:1rem;border:1px solid #64748b;font-size:.875rem;white-space:pre}
+    .table-wrap{overflow:auto}table{border-collapse:collapse;width:100%;text-align:left}th,td{padding:.65rem;border-bottom:1px solid #64748b;vertical-align:top}
+    th{background:#eaf3ff}td{overflow-wrap:anywhere}td button{padding:.35rem .6rem}td button[aria-expanded=true]{background:#18283b}
+    dl{display:grid;grid-template-columns:minmax(6rem,1fr) minmax(0,2fr);gap:.5rem 1rem}dt{font-weight:600}dd{margin:0;overflow-wrap:anywhere}
+    #row-details pre{white-space:pre-wrap;overflow-wrap:anywhere}summary{cursor:pointer;font-weight:600;padding:.5rem 0}
+    #status{min-height:1.5em;font-weight:600}#rows-note{background:#eaf3ff;padding:.75rem}.skip{position:absolute;left:-9999px}.skip:focus{left:1rem;top:1rem;background:white;padding:.75rem;z-index:1}
+    [hidden]{display:none!important}@media(max-width:65rem){.columns{grid-template-columns:1fr}}@media(max-width:38rem){.fields{grid-template-columns:1fr}dl{grid-template-columns:1fr}dd{margin-bottom:.75rem}}
+  </style>
+  <script src="/static/extraction.js" defer></script>
+</head>
+<body>
+<a class="skip" href="#extraction-form">Skip to extraction form</a>
+<main>
+  <nav aria-label="Page navigation"><a href="/">Demonstration page</a></nav>
+  <h1>Extract one laboratory results page</h1>
+  <p class="muted">Choose an archived PDF by document ID and PDF page numbers. Page numbers may differ from the labels printed in the report.</p>
+  <p class="notice"><strong>Research experiment: all results are unconfirmed.</strong> The PDF stays in the archive. Extracted page text and qualifier definitions are sent to the configured model service. Nothing here confirms evidence or measures extraction accuracy.</p>
+  <form id="extraction-form">
+    <div class="fields">
+      <div><label for="doc-id">Archive document ID</label><input id="doc-id" name="doc_id" placeholder="DOC-0033" pattern="DOC-[0-9]{4}" required autocomplete="off" aria-describedby="document-help"></div>
+      <div><label for="results-page">Results PDF page</label><input id="results-page" name="results_page" type="number" min="1" step="1" value="6" required></div>
+      <div><label for="definitions-page">Definitions PDF page</label><input id="definitions-page" name="definitions_page" type="number" min="1" step="1" value="3" required></div>
+    </div>
+    <p id="document-help" class="muted">For example: DOC-0033, results page 6, definitions page 3. The archive must be available on the server.</p>
+    <button id="extract-button" type="submit">Extract page</button>
+    <p id="status" role="status" aria-live="polite" aria-atomic="true">No extraction has been submitted.</p>
+  </form>
+  <div class="columns">
+    <section class="panel" aria-labelledby="source-heading">
+      <h2 id="source-heading">Source text</h2>
+      <p id="provenance" class="muted">No current page.</p>
+      <pre id="source-text" class="source-text" tabindex="0" aria-label="Results page text">Submit a page to read its extracted text.</pre>
+      <details><summary>Qualifier definitions text</summary><pre id="definitions-text" class="source-text" tabindex="0" aria-label="Qualifier definitions text">No current definitions page.</pre></details>
+    </section>
+    <section class="panel" aria-labelledby="results-heading">
+      <h2 id="results-heading">Draft results</h2>
+      <p id="row-count">No current results.</p>
+      <div id="rows-region" hidden>
+        <p id="rows-note">Unconfirmed model output; completeness has not been verified.</p>
+        <div class="table-wrap" tabindex="0" role="region" aria-label="Draft results table">
+          <table aria-describedby="rows-note"><thead><tr><th scope="col">Sample</th><th scope="col">Analyte</th><th scope="col">Result as written</th><th scope="col">Qualifier</th><th scope="col">Units</th><th scope="col">Review</th><th scope="col">Inspect</th></tr></thead><tbody id="result-rows"></tbody></table>
+        </div>
+      </div>
+      <section id="row-details" hidden aria-labelledby="details-heading">
+        <h3 id="details-heading">Row details</h3><dl id="details-list"></dl>
+      </section>
+    </section>
+  </div>
+</main>
+</body>
+</html>

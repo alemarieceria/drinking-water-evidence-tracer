@@ -1,76 +1,19 @@
 """Orchestration tests use local catalogs/PDFs and TestModel, never the archive."""
 
-import csv
 from pathlib import Path
 
 import pytest
 from pydantic_ai.models.test import TestModel
 
-from app.archive import file_sha256, load_catalog
+from app.archive import file_sha256
 from app.extraction import ExtractionService
 from app.models import ExtractionRequest
-from app.pages import read_pages
 from app.runs import RunStorageError, load_run, save_run
 from tests.extraction_helpers import fixture_data, simple_pages, simple_row
-from tests.pdf_helpers import write_pdf
+from tests.pdf_helpers import make_archive, write_pdf
 from tests.test_extraction_agent import BrokenModel, CountingModel, SlowModel
 
 pytestmark = pytest.mark.anyio
-
-
-def make_archive(root: Path, doc_id: str = "DOC-0001", duplicate: bool = False) -> Path:
-    root.mkdir(parents=True, exist_ok=True)
-    path = root / "source.pdf"
-    if not path.exists():
-        write_pdf(path, ("Sample SAMPLE-1 Lead 0.27 J", "J estimated"))
-    (root / "registry").mkdir(exist_ok=True)
-    with (root / "registry/documents.csv").open(
-        "w", encoding="utf-8", newline=""
-    ) as stream:
-        fields = [
-            "doc_id",
-            "status",
-            "duplicate_of",
-            "local_path",
-            "sha256",
-            "source_url",
-            "title_as_posted",
-        ]
-        writer = csv.DictWriter(stream, fieldnames=fields)
-        writer.writeheader()
-        writer.writerow(
-            dict(
-                zip(
-                    fields,
-                    [
-                        doc_id,
-                        "done",
-                        "DOC-0002" if duplicate else "",
-                        "source.pdf",
-                        file_sha256(path),
-                        "https://example.org/source.pdf",
-                        "Test report",
-                    ],
-                    strict=True,
-                )
-            )
-        )
-    return path
-
-
-@pytest.fixture
-def service_setup(tmp_path: Path, monkeypatch: pytest.MonkeyPatch):
-    root = tmp_path / "archive"
-    source = make_archive(root)
-    monkeypatch.setenv("LLM_API_GATEWAY", "https://example.org/v1")
-    monkeypatch.setenv("LLM_API_TOKEN", "fake-test-secret")
-    monkeypatch.setenv("LLM_MODEL", "test-only")
-    pages = read_pages(load_catalog(root)["DOC-0001"], 1, 2)
-    line = next(
-        i for i, s in enumerate(pages.results_text.splitlines(), 1) if "Lead" in s
-    )
-    output = {"status": "extracted", "rows": [simple_row(source_line=line)]}
-    return root, source, tmp_path / "runs", output
 
 
 async def test_records_success_with_real_local_pdf(service_setup, caplog) -> None:

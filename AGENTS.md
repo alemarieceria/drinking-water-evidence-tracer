@@ -5,6 +5,8 @@ Drinking Water Evidence Tracer is a research tool that helps environmental resea
 
 ## Layout
 - app/main.py: routes and the page. No business rules.
+- app/extraction_page.html and app/static/extraction.js:
+  extraction presentation and browser state; no evidence rules.
 - app/agent.py: bounded Pydantic AI page extraction.
 - app/models.py: shared request, response, extraction,
   and run-record data contracts. No model calls.

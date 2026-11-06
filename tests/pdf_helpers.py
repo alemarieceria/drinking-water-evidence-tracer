@@ -1,5 +1,6 @@
 """Generate tiny text PDFs for reader tests, without another PDF dependency."""
 
+import csv
 from pathlib import Path
 
 from app.archive import ArchivedDocument, file_sha256
@@ -58,3 +59,43 @@ def document_for(path: Path) -> ArchivedDocument:
         sha256=file_sha256(path),
         source_url="https://example.org/report.pdf",
     )
+
+
+def make_archive(root: Path, doc_id: str = "DOC-0001", duplicate: bool = False) -> Path:
+    root.mkdir(parents=True, exist_ok=True)
+    path = root / "source.pdf"
+    if not path.exists():
+        write_pdf(path, ("Sample SAMPLE-1 Lead 0.27 J", "J estimated"))
+    (root / "registry").mkdir(exist_ok=True)
+    with (root / "registry/documents.csv").open(
+        "w", encoding="utf-8", newline=""
+    ) as stream:
+        fields = [
+            "doc_id",
+            "status",
+            "duplicate_of",
+            "local_path",
+            "sha256",
+            "source_url",
+            "title_as_posted",
+        ]
+        writer = csv.DictWriter(stream, fieldnames=fields)
+        writer.writeheader()
+        writer.writerow(
+            dict(
+                zip(
+                    fields,
+                    [
+                        doc_id,
+                        "done",
+                        "DOC-0002" if duplicate else "",
+                        "source.pdf",
+                        file_sha256(path),
+                        "https://example.org/source.pdf",
+                        "Test report",
+                    ],
+                    strict=True,
+                )
+            )
+        )
+    return path
