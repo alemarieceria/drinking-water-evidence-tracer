@@ -15,6 +15,8 @@ defines the intended product; this map describes the code that exists today.
   awaiting A. Ceria's source-PDF review; the page does not use them yet.
 - **Implemented in isolation:** interpreting detections/nondetects and checking
   model-row source references; this does not prove completeness or correct sample attachment.
+- **Implemented in isolation:** bounded model calls with captured messages, explicit
+  gateway/model configuration, and a global offline-test guard. Live accuracy is unmeasured.
 - **Placeholder:** every valid search returns the same HT03 lead example. The
   displayed flags, source preview, and inventory are fixed demonstration content.
 - **Planned:** reading PDF contents, model extraction, record matching, unit conversion,
@@ -24,7 +26,7 @@ The [one-page extraction design](superpowers/specs/2026-10-29-page-extraction-de
 describes the next experiment: one archived page, chosen by catalog ID, to
 unconfirmed model-extracted rows, with local run records and no retrieval or database.
 The [implementation plan](superpowers/plans/2026-11-05-page-extraction.md) is for
-review history is kept in Git; model extraction and live scoring remain planned. The proposal's sections
+review history is kept in Git; page integration and live scoring remain planned. The proposal's sections
 10 and 19 define its scope.
 
 ## Current processing
@@ -102,7 +104,7 @@ sections [10-11](proposal.md#10-llm-role), [14](proposal.md#14-human-review), an
 | File | Responsibility |
 | --- | --- |
 | [app/main.py](../app/main.py) | Web entry point: page, browser script, routes, and fixed response. |
-| [app/agent.py](../app/agent.py) | Model-extraction boundary; not initialized yet. |
+| [app/agent.py](../app/agent.py) | Bounded model extraction and captured messages; initialized only for an extraction request. |
 | [app/models.py](../app/models.py) | Shared data contracts; raw numeric strings and unconfirmed review status. |
 | [app/rules.py](../app/rules.py) | Numeric disagreement, detection/nondetect interpretation, and source-reference checks. |
 | [app/archive.py](../app/archive.py) | Finds source PDFs through the archive catalog and checks their fingerprints. |
