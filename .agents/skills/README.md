@@ -13,3 +13,10 @@ To update, use the skill-installer helper with `--repo obra/superpowers`, a revi
 `--ref`, all upstream skill paths, and `--dest .agents/skills`. The helper refuses
 to overwrite existing skills; review and replace the existing copies deliberately,
 then update this revision and rerun the project checks.
+
+## Project skill
+
+[evidence-review](evidence-review/SKILL.md) reviews PR behavior claims against the
+diff, tests, proposal, and project map without changing the reviewed work. It
+distinguishes offline TestModel evidence, live accuracy, and human review. This
+project-owned skill is separate from the 15 upstream Superpowers skills above.
