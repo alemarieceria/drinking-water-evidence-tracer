@@ -23,9 +23,10 @@ references were checked by A. Ceria; they cover captured environmental fields,
 not every report column or QC row. Live trial results belong in the feature PR,
 not a claim of accuracy across all five intended laboratory formats.
 
-Browser policy prevented live UI verification in this session. DOM tests check
-state handling and text rendering; real keyboard, zoom/reflow, and screen-reader
-checks remain pending. No accessibility-conformance claim is made.
+DOM tests check state handling and text rendering. The owner reports manual Tab
+traversal and supplied screenshots at 100% and 200% zoom. Keyboard activation,
+complete zoom/reflow behavior, and screen-reader checks remain pending.
+No accessibility-conformance claim is made.
 
 ## Current processing
 
