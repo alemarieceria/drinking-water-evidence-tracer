@@ -1,0 +1,60 @@
+                                                                                    
+                                                                                    
+                                                   Certificate     of Analysis      
+                                                                                    
+                                                                       FINAL REPORT 
+                                                                                    
+  AECOM - Honolulu                Project Number: 60674414, COC # 01042022DW-01 Reported:
+  1001 Bishop Street Suite 1600                                          01/10/2022 20:22
+  Honolulu, HI 96813             Project Manager: Margie Pascua                     
+       Sample Results                                                      (Continued)
+                                                                                    
+   Sample: 20220104-A1-ZT03                                     Sampled: 01/04/22 10:50 by AECOM
+                                                                           (Continued)
+          2A05051-02 (Water)                                                        
+    Analyte                            Result MDL  MRL   Units  Dil  Analyzed Qualifier
+  Volatile Organic Compounds by P&T and GC/MS (Continued)                           
+   Method: EPA 524.2                             Instr: GCMS14                      
+    Batch ID: W2A0117    Preparation: EPA 5030   Prepared: 01/04/22 12:16   Analyst: cam
+    1,3-Dichloropropene, Total          ND         0.50   ug/l  1   01/06/22    U   
+    2,2-Dichloropropane                 ND  0.17   0.50   ug/l  1   01/06/22    U   
+    2-Butanone                          ND  1.5    5.0    ug/l  1   01/06/22    U   
+    2-Chlorotoluene                     ND  0.15   0.50   ug/l  1   01/06/22    U   
+    2-Hexanone                          ND  1.2    5.0    ug/l  1   01/06/22    U   
+    4-Chlorotoluene                     ND  0.15   0.50   ug/l  1   01/06/22    U   
+    4-Methyl-2-pentanone                ND  1.8    5.0    ug/l  1   01/06/22    U   
+    Benzene                             ND  0.15   0.50   ug/l  1   01/06/22    U   
+    Bromobenzene                        ND  0.15   0.50   ug/l  1   01/06/22    U   
+    Bromochloromethane                  ND  0.15   0.50   ug/l  1   01/06/22    U   
+    Bromodichloromethane                0.29 0.24  0.50   ug/l  1   01/06/22     J  
+    Bromoform                           0.86 0.38  0.50   ug/l  1   01/06/22        
+    Bromomethane                        ND  0.27   0.50   ug/l  1   01/06/22    U   
+    Carbon tetrachloride                ND  0.27   0.50   ug/l  1   01/06/22    U   
+    Chlorobenzene                       ND  0.15   0.50   ug/l  1   01/06/22    U   
+    Chloroethane                        ND  0.17   0.50   ug/l  1   01/06/22    U   
+                                                                                    
+    Chloroform                          ND  0.27   0.50   ug/l  1   01/06/22    U   
+    Chloromethane                       ND  0.23   0.50   ug/l  1   01/06/22    U   
+    cis-1,2-Dichloroethene              ND  0.25   0.50   ug/l  1   01/06/22    U   
+    cis-1,3-Dichloropropene             ND  0.30   0.50   ug/l  1   01/06/22    U   
+    Dibromochloromethane                0.74 0.20  0.50   ug/l  1   01/06/22        
+    Dibromomethane                      ND  0.20   0.50   ug/l  1   01/06/22    U   
+    Dichlorodifluoromethane (Freon 12)  ND  0.45   0.50   ug/l  1   01/06/22    U   
+    Di-isopropyl ether                  ND  1.1    2.0    ug/l  1   01/06/22    U   
+    Ethyl tert-butyl ether              ND  1.0    2.0    ug/l  1   01/06/22    U   
+                                                                                    
+    Ethylbenzene                        ND  0.21   0.50   ug/l  1   01/06/22    U   
+    Freon 113                           ND  1.5    5.0    ug/l  1   01/06/22    U   
+    Hexachlorobutadiene                 ND  0.40   0.50   ug/l  1   01/06/22    U   
+    Isopropylbenzene                    ND  0.18   0.50   ug/l  1   01/06/22    U   
+    m,p-Xylene                          ND  0.33   0.50   ug/l  1   01/06/22    U   
+    m-Dichlorobenzene                   ND  0.14   0.50   ug/l  1   01/06/22    U   
+    Methyl tert-butyl ether (MTBE)      ND  0.94   2.0    ug/l  1   01/06/22    U   
+    Methylene chloride                  ND  0.30   0.50   ug/l  1   01/06/22    U   
+    Naphthalene                         ND  0.35   0.50   ug/l  1   01/06/22    U   
+    n-Butylbenzene                      ND  0.29   0.50   ug/l  1   01/06/22    U   
+                                                                                    
+                                                                                    
+  2A05051                                                                    Page 7 of 16
+                       14859 Clark Avenue,City of Industry CA, 91745 | Phone: (626) 336-2139 | Fax: (626) 336-2634
+                                      www.wecklabs.com                              

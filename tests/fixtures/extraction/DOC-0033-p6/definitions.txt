@@ -1,0 +1,60 @@
+                                                                                    
+                                                                                    
+                                 Definitions/Glossary                             1 
+    Client: AECOM Technical Services Inc.                           Job ID: 810-12365-1
+    Project/Site: Red Hill                                                        2 
+                                                                                    
+    Qualifiers                                                                      
+                                                                                  3 
+    GC/MS Semi VOA                                                                  
+                                                                                  4 
+    Qualifier Qualifier Description                                                 
+    J        Result is less than the RL but greater than or equal to the MDL and the concentration is an approximate value.
+                                                                                  5 
+    Glossary                                                                        
+    Abbreviation These commonly used abbreviations may or may not be present in this report. 6
+    ¤        Listed under the "D" column to designate that the result is reported on a dry weight basis
+    %R       Percent Recovery                                                     7 
+    CFL      Contains Free Liquid                                                   
+    CFU      Colony Forming Unit                                                  8 
+    CNF      Contains No Free Liquid                                                
+    DER      Duplicate Error Ratio (normalized absolute difference)                 
+                                                                                  9 
+    Dil Fac  Dilution Factor                                                        
+    DL       Detection Limit (DoD/DOE)                                              
+                                                                                  10
+    DL, RA, RE, IN Indicates a Dilution, Re-analysis, Re-extraction, or additional Initial metals/anion analysis of the sample
+    DLC      Decision Level Concentration (Radiochemistry)                          
+                                                                                  11
+    EDL      Estimated Detection Limit (Dioxin)                                     
+    LOD      Limit of Detection (DoD/DOE)                                           
+    LOQ      Limit of Quantitation (DoD/DOE)                                      12
+    MCL      EPA recommended "Maximum Contaminant Level"                            
+    MDA      Minimum Detectable Activity (Radiochemistry)                         13
+    MDC      Minimum Detectable Concentration (Radiochemistry)                      
+    MDL      Method Detection Limit                                               14
+    ML       Minimum Level (Dioxin)                                                 
+    MPN      Most Probable Number                                                 15
+    MQL      Method Quantitation Limit                                              
+    NC       Not Calculated                                                         
+    ND       Not Detected at the reporting limit (or MDL or EDL if shown)           
+    NEG      Negative / Absent                                                      
+    POS      Positive / Present                                                     
+    PQL      Practical Quantitation Limit                                           
+    PRES     Presumptive                                                            
+    QC       Quality Control                                                        
+    RER      Relative Error Ratio (Radiochemistry)                                  
+    RL       Reporting Limit or Requested Limit (Radiochemistry)                    
+    RPD      Relative Percent Difference, a measure of the relative difference between two points
+    TEF      Toxicity Equivalent Factor (Dioxin)                                    
+    TEQ      Toxicity Equivalent Quotient (Dioxin)                                  
+    TNTC     Too Numerous To Count                                                  
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                Eurofins Eaton South Bend
+                                                                                    
+                                      Page 3 of 20                        1/21/2022 

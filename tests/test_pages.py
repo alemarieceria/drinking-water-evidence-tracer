@@ -33,6 +33,14 @@ def test_accepts_same_page_twice(tmp_path: Path) -> None:
     assert pages.results_text == pages.definitions_text
 
 
+@pytest.mark.parametrize("number", [True, 1.0])
+def test_rejects_noninteger_definitions_page(tmp_path: Path, number: int) -> None:
+    path = tmp_path / "input.pdf"
+    write_pdf(path, ("Results and definitions",))
+    with pytest.raises(PageReadError):
+        read_pages(document_for(path), 1, number)
+
+
 @pytest.mark.parametrize("number", [0, -1, 3, True, 1.5])
 def test_rejects_out_of_range_page(tmp_path: Path, number: int) -> None:
     path = tmp_path / "input.pdf"
@@ -81,7 +89,9 @@ def test_rejects_missing_fingerprint_or_file(tmp_path: Path) -> None:
     assert caught.value.code == "missing_file"
 
 
-def test_rejects_changed_file_after_read(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+def test_rejects_changed_file_after_read(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
     path = tmp_path / "input.pdf"
     write_pdf(path, ("Results",))
     document = document_for(path)
@@ -97,7 +107,9 @@ def test_stored_fixtures_are_reproducible_drafts(name: str, count: int) -> None:
     folder = FIXTURES / name
     source = json.loads((folder / "source.json").read_text(encoding="utf-8"))
     assert source["review"] == {
-        "status": "draft", "reviewed_by": None, "reviewed_at": None,
+        "status": "draft",
+        "reviewed_by": None,
+        "reviewed_at": None,
         "inputs_sha256": None,
     }
     for filename, digest in source["inputs"]["file_hashes"].items():

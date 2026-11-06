@@ -78,9 +78,9 @@ These are development fixtures only: neither expands the proposal's version-one
 corpus. `DOC-0003` page 7 is also outside Zone I1: its sample, 20220104-A1-ZT03,
 is from Zone A1, although the Navy filed it with the I1 release.
 
-Implementation will store each fixture in the repository as extracted page text (margin
+The repository stores each fixture as extracted page text (margin
 numbers included), with the PDF library version that produced it, and a
-hand-checked expected-rows file. These files do not exist yet; A. Ceria must
+draft expected-rows file. A. Ceria must
 check the expected rows against the source PDF before they become the scoring
 reference. Each expected-rows file will list every row's sample ID, analyte,
 result as written, qualifier, reporting limit (RL or MRL), MDL, and units. Tests
@@ -97,7 +97,7 @@ Offline tests alone cannot establish extraction accuracy.
 
 ## PDF library comparison
 
-**Selected library, not yet an application dependency:** pdfplumber 0.11.10,
+**Selected library:** pdfplumber 0.11.10,
 using `page.extract_text(layout=True)` with its default spacing settings and
 pdfminer.six 20260107. The trial used Windows and Python 3.14, both results pages
 and both definitions pages above, and three independent extractions per page

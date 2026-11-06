@@ -1,0 +1,32 @@
+{
+  "inputs": {
+    "doc_id": "DOC-0033",
+    "title": "Laboratory Report, SDG 810-12365-1, Level 2",
+    "source_url": "https://jbphh-safewaters.org/public/library/StreamResource.axd?DSN=PUB&Mode=FileImage_Inline&ID=2948",
+    "results_page": 6,
+    "definitions_page": 3,
+    "reader_versions": {
+      "pdfplumber": "0.11.10",
+      "pdfminer.six": "20260107"
+    },
+    "extraction_options": {
+      "layout": true,
+      "x_tolerance": 3,
+      "y_tolerance": 3,
+      "x_density": 7.25,
+      "y_density": 13
+    },
+    "pdf_sha256": "0fbfa2d7ce9d5c494e1b303e83c8561849eb3b5b8a976111bb0bd1125b85fb95",
+    "file_hashes": {
+      "page.txt": "4e0013de3ff96c924ba1b8f96c25f85d39d2a65d51337d8005ad989737c6aced",
+      "definitions.txt": "4a4a8b2cc43dbf6dac2f164f2265e247fae6822254e8bb200af58d57a1197a4d",
+      "expected_rows.csv": "4f254c4e1d7134947e886392e8caaa57f1c8b8e22f07314e59a8a82aa7762e29"
+    }
+  },
+  "review": {
+    "status": "draft",
+    "reviewed_by": null,
+    "reviewed_at": null,
+    "inputs_sha256": null
+  }
+}

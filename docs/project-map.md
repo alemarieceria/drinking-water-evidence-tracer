@@ -10,6 +10,9 @@ defines the intended product; this map describes the code that exists today.
   exchanged with the page), and a numeric disagreement rule tested on its own.
 - **Implemented:** finding the version 1 source PDFs through the document archive's
   catalog and checking that each file is unchanged. The page does not use them yet.
+- **Implemented in isolation:** reading fingerprint-checked PDF page text with the
+  fixed pdfplumber reader. Stored extraction fixtures have draft expected rows,
+  awaiting A. Ceria's source-PDF review; the page does not use them yet.
 - **Placeholder:** every valid search returns the same HT03 lead example. The
   displayed flags, source preview, and inventory are fixed demonstration content.
 - **Planned:** reading PDF contents, model extraction, record matching, unit conversion,
@@ -19,7 +22,7 @@ The [one-page extraction design](superpowers/specs/2026-10-29-page-extraction-de
 describes the next experiment: one archived page, chosen by catalog ID, to
 unconfirmed model-extracted rows, with local run records and no retrieval or database.
 The [implementation plan](superpowers/plans/2026-11-05-page-extraction.md) is for
-review; none of its extraction behavior is implemented. The proposal's sections
+review history is kept in Git; model extraction and live scoring remain planned. The proposal's sections
 10 and 19 define its scope.
 
 ## Current processing
@@ -70,7 +73,8 @@ of the file changes). [`app/archive.py`](../app/archive.py) reads that catalog:
 
 `uv run python -m app.archive` runs these steps for the version 1 set and prints
 `27 documents found in ...; all files present and unchanged.` or a list of problems.
-Nothing reads the PDFs' contents yet.
+The separate page reader can read selected PDF pages; the current demonstration
+route does not use it.
 
 ## Intended processing and remaining work
 
@@ -99,6 +103,8 @@ sections [10-11](proposal.md#10-llm-role), [14](proposal.md#14-human-review), an
 | [app/agent.py](../app/agent.py) | Input/output field models; no agent or model call is initialized. |
 | [app/rules.py](../app/rules.py) | Plain-Python evidence decisions; currently one numeric comparison. |
 | [app/archive.py](../app/archive.py) | Finds source PDFs through the archive catalog and checks their fingerprints. |
+| [app/pages.py](../app/pages.py) | Reads the selected pages, preserving text and checking the fingerprint before and after reading. |
+| [tests/fixtures/extraction/](../tests/fixtures/extraction/) | Stored page text, reader settings and hashes, and explicitly draft expected rows for the two development inputs. |
 | [data/v1_documents.txt](../data/v1_documents.txt) | Catalog IDs of the 27 version 1 PDFs, grouped by batch. |
 | [tests/test_skeleton.py](../tests/test_skeleton.py) | Page/form and endpoint field checks; real model requests are blocked. |
 | [tests/test_rules.py](../tests/test_rules.py) | Numeric mismatch and equality examples. |
@@ -163,7 +169,7 @@ choices are documented in the proposal and merged PRs:
 | Keep domain decisions in plain Python, separate from model extraction, so tests can check them exactly. | The caller must handle extraction, matching, and applying decisions. | Proposal section 10; [first rule PR](https://github.com/alemarieceria/drinking-water-evidence-tracer/pull/3). |
 | Start with a fixed response to establish the page and data shapes. | Displayed data is illustrative until real processing is connected. | [Skeleton commit](https://github.com/alemarieceria/drinking-water-evidence-tracer/commit/653447a). |
 | Find source PDFs through the document archive's catalog, keeping one fingerprinted copy with its source and download time. The alternative considered was hand-copied PDFs in `data/reports/v1/`, which had no recorded source or fingerprint and duplicated the archive. | Checking real files needs the Shared Drive available; tests use a temporary catalog. The catalog's `duplicate_of` column decides which copy is processed. | [Archive catalog PR #12](https://github.com/alemarieceria/drinking-water-evidence-tracer/pull/12). |
-| Use pdfplumber 0.11.10 layout mode with pdfminer.six 20260107 for planned extraction. It kept both fixture tables readable and retained the blank MDL. pypdf's tested modes lost or joined fields, PyMuPDF joined rows and has AGPL/commercial licensing, and Poppler needs a separate executable. | Not installed in the app yet. Pin reader versions/settings; preserve margin tabs and investigate model accuracy separately. | [Library comparison and owner acceptance, PR #13](https://github.com/alemarieceria/drinking-water-evidence-tracer/pull/13); [design comparison](superpowers/specs/2026-10-29-page-extraction-design.md#pdf-library-comparison). |
+| Use pdfplumber 0.11.10 layout mode with pdfminer.six 20260107 for extraction. It kept both fixture tables readable and retained the blank MDL. pypdf's tested modes lost or joined fields, PyMuPDF joined rows and has AGPL/commercial licensing, and Poppler needs a separate executable. | Reader installed and tested in isolation. Pin reader versions/settings; preserve margin tabs and investigate model accuracy separately. | [Library comparison and owner acceptance, PR #13](https://github.com/alemarieceria/drinking-water-evidence-tracer/pull/13); [design comparison](superpowers/specs/2026-10-29-page-extraction-design.md#pdf-library-comparison). |
 
 Update this map when capabilities, connections, setup, or responsibilities change.
 Keep detailed requirements in the proposal and change-specific reasoning in PRs.
