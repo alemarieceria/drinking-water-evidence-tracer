@@ -94,3 +94,74 @@ test("HTTP errors cannot display a success-shaped payload", async () => {
   assert.match(document.getElementById("status").textContent, /failed/i);
   window.close();
 });
+
+test("either section can use the full width without losing the extraction", async () => {
+  const {window, document, requests, submit} = setup();
+  submit(); respond(requests[0], payload()); await tick();
+  const sourceOnly = document.getElementById("view-source");
+  assert.ok(sourceOnly, "a source-only view control is available");
+  sourceOnly.click();
+  assert.equal(document.getElementById("source-panel").hidden, false);
+  assert.equal(document.getElementById("results-panel").hidden, true);
+  assert.equal(sourceOnly.getAttribute("aria-pressed"), "true");
+  document.getElementById("view-results").click();
+  assert.equal(document.getElementById("source-panel").hidden, true);
+  assert.equal(document.getElementById("results-panel").hidden, false);
+  assert.equal(sourceOnly.getAttribute("aria-pressed"), "false");
+  document.getElementById("view-both").click();
+  assert.equal(document.getElementById("source-panel").hidden, false);
+  assert.equal(document.getElementById("results-panel").hidden, false);
+  assert.equal(document.querySelectorAll("#result-rows tr").length, 1);
+  assert.match(document.getElementById("source-text").textContent, /Lead/);
+  window.close();
+});
+
+test("the compact table fits five measured rows and can expand without dropping rows", async () => {
+  const {window, document, requests, submit} = setup();
+  // jsdom has no layout. Supply renderer measurements, with unequal row heights.
+  const originalRect = window.HTMLElement.prototype.getBoundingClientRect;
+  window.HTMLElement.prototype.getBoundingClientRect = function () {
+    if (this.matches("thead")) return {height: 40};
+    if (this.matches("#result-rows tr")) {
+      return {height: [32, 48, 32, 64, 48, 96][this.sectionRowIndex]};
+    }
+    return originalRect.call(this);
+  };
+  const data = payload();
+  data.rows = Array.from({length: 6}, (_, i) => ({...data.rows[0], analyte: `Analyte ${i + 1}`}));
+  data.total_rows = 6;
+  submit(); respond(requests[0], data); await tick();
+  const viewport = document.getElementById("table-viewport");
+  const toggle = document.getElementById("table-size");
+  assert.ok(viewport, "results have a bounded table viewport");
+  assert.ok(toggle, "the table can be expanded");
+  assert.equal(viewport.style.maxHeight, "264px");
+  assert.equal(document.querySelectorAll("#result-rows tr").length, 6);
+  toggle.click();
+  assert.equal(viewport.style.maxHeight, "none");
+  assert.equal(toggle.getAttribute("aria-expanded"), "true");
+  toggle.click();
+  assert.equal(viewport.style.maxHeight, "264px");
+  assert.equal(toggle.getAttribute("aria-expanded"), "false");
+  window.close();
+});
+
+test("Details brings the selected information into focus and can return to the row", async () => {
+  const {window, document, requests, submit} = setup();
+  const data = payload();
+  data.rows.push({...data.rows[0], analyte: "Benzene", mdl: "0.15"});
+  data.total_rows = 2;
+  submit(); respond(requests[0], data); await tick();
+  const buttons = document.querySelectorAll("#result-rows button");
+  buttons[1].click();
+  assert.equal(document.activeElement.id, "details-heading");
+  assert.match(document.activeElement.textContent, /Benzene/);
+  assert.equal(buttons[0].getAttribute("aria-expanded"), "false");
+  assert.equal(buttons[1].getAttribute("aria-expanded"), "true");
+  document.getElementById("back-to-row").click();
+  assert.equal(document.activeElement, buttons[1]);
+  buttons[0].click();
+  assert.match(document.getElementById("details-heading").textContent, /Lead/);
+  assert.equal(document.activeElement.id, "details-heading");
+  window.close();
+});
