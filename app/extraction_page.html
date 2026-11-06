@@ -16,9 +16,13 @@
     form button{margin-top:1rem}button:disabled{background:#475569;cursor:wait}
     :focus-visible{outline:3px solid #9a3412;outline-offset:3px}
     .columns{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.3fr);gap:1.25rem;align-items:start}
+    .columns[data-view=source],.columns[data-view=results]{grid-template-columns:minmax(0,1fr)}
+    .view-controls,.table-controls{display:flex;flex-wrap:wrap;align-items:center;gap:.5rem;margin:1rem 0}
+    .view-controls button[aria-pressed=true]{background:#18283b}
     .columns>.panel{min-width:0;margin-top:0}.source-text{overflow:auto;max-height:42rem;background:#f8fafc;padding:1rem;border:1px solid #64748b;font-size:.875rem;white-space:pre}
-    .table-wrap{overflow:auto}table{border-collapse:collapse;width:100%;text-align:left}th,td{padding:.65rem;border-bottom:1px solid #64748b;vertical-align:top}
-    th{background:#eaf3ff}td{overflow-wrap:anywhere}td:nth-child(6){white-space:nowrap}td button{padding:.35rem .6rem;white-space:nowrap}td button[aria-expanded=true]{background:#18283b}
+    .table-wrap{overflow:auto;max-height:30rem}table{border-collapse:collapse;width:100%;text-align:left}th,td{padding:.65rem;border-bottom:1px solid #64748b;vertical-align:top}
+    th{background:#eaf3ff;position:sticky;top:0;z-index:1}td{overflow-wrap:anywhere}td:nth-child(6){white-space:nowrap}td button{padding:.35rem .6rem;white-space:nowrap}td button[aria-expanded=true]{background:#18283b}
+    #row-details{border:1px solid #64748b;border-radius:.3rem;padding:1rem;margin:1rem 0}
     dl{display:grid;grid-template-columns:minmax(6rem,1fr) minmax(0,2fr);gap:.5rem 1rem}dt{font-weight:600}dd{margin:0;overflow-wrap:anywhere}
     #row-details pre{white-space:pre-wrap;overflow-wrap:anywhere}summary{cursor:pointer;font-weight:600;padding:.5rem 0}
     #status{min-height:1.5em;font-weight:600}#rows-note{background:#eaf3ff;padding:.75rem}.skip{position:absolute;left:-9999px}.skip:focus{left:1rem;top:1rem;background:white;padding:.75rem;z-index:1}
@@ -43,25 +47,36 @@
     <button id="extract-button" type="submit">Extract page</button>
     <p id="status" role="status" aria-live="polite" aria-atomic="true">No extraction has been submitted.</p>
   </form>
-  <div class="columns">
-    <section class="panel" aria-labelledby="source-heading">
+  <div class="view-controls" role="group" aria-label="Section layout">
+    <button id="view-both" type="button" aria-pressed="true" aria-controls="source-panel results-panel">Both sections</button>
+    <button id="view-source" type="button" aria-pressed="false" aria-controls="source-panel results-panel">Source text full width</button>
+    <button id="view-results" type="button" aria-pressed="false" aria-controls="source-panel results-panel">Draft results full width</button>
+  </div>
+  <div id="extraction-panels" class="columns" data-view="both">
+    <section id="source-panel" class="panel" aria-labelledby="source-heading">
       <h2 id="source-heading">Source text</h2>
       <p id="provenance" class="muted">No current page.</p>
       <pre id="source-text" class="source-text" tabindex="0" aria-label="Results page text">Submit a page to read its extracted text.</pre>
       <details><summary>Qualifier definitions text</summary><pre id="definitions-text" class="source-text" tabindex="0" aria-label="Qualifier definitions text">No current definitions page.</pre></details>
     </section>
-    <section class="panel" aria-labelledby="results-heading">
+    <section id="results-panel" class="panel" aria-labelledby="results-heading">
       <h2 id="results-heading">Draft results</h2>
       <p id="row-count">No current results.</p>
       <div id="rows-region" hidden>
         <p id="rows-note">Unconfirmed model output; completeness has not been verified.</p>
-        <div class="table-wrap" tabindex="0" role="region" aria-label="Draft results table">
+        <section id="row-details" hidden aria-labelledby="details-heading">
+          <h3 id="details-heading" tabindex="-1">Row details</h3>
+          <button id="back-to-row" type="button">Back to selected result</button>
+          <dl id="details-list"></dl>
+        </section>
+        <div class="table-controls">
+          <button id="table-size" type="button" aria-expanded="false" aria-controls="table-viewport" hidden>Expand table</button>
+          <p id="table-help">Scroll within the table for more results. Details opens the selected result above the table.</p>
+        </div>
+        <div id="table-viewport" class="table-wrap" tabindex="0" role="region" aria-label="Draft results table" aria-describedby="table-help">
           <table aria-describedby="rows-note"><thead><tr><th scope="col">Sample</th><th scope="col">Analyte</th><th scope="col">Result as written</th><th scope="col">Qualifier</th><th scope="col">Units</th><th scope="col">Review</th><th scope="col">Inspect</th></tr></thead><tbody id="result-rows"></tbody></table>
         </div>
       </div>
-      <section id="row-details" hidden aria-labelledby="details-heading">
-        <h3 id="details-heading">Row details</h3><dl id="details-list"></dl>
-      </section>
     </section>
   </div>
 </main>

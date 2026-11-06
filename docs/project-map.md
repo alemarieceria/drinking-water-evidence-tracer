@@ -55,6 +55,13 @@ return no rows; storage failure never presents success. Input changes and new
 submissions clear old output, and late responses cannot replace a newer request.
 A successful request does not establish completeness or field accuracy.
 
+Layout controls show both sections or either section at full width. The results
+table measures its first five rows to set a scrollable height, retaining all rows
+and sticky column headings; an expand control removes that height limit. Resizing
+or changing the layout recalculates the compact height. Details opens above the
+table and receives heading focus; Back to selected result returns to its button.
+New attempts clear details and reset the table size, preserving the chosen layout.
+
 ### The separate numeric rule
 
 [`result_values_disagree`](../app/rules.py) compares two `Decimal` numbers: an

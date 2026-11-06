@@ -143,6 +143,20 @@ test("the compact table fits five measured rows and can expand without dropping 
   toggle.click();
   assert.equal(viewport.style.maxHeight, "264px");
   assert.equal(toggle.getAttribute("aria-expanded"), "false");
+  // Changing width/zoom can change wrapped row heights and add a horizontal bar.
+  const rows = document.querySelectorAll("#result-rows tr");
+  rows[0].getBoundingClientRect = () => ({height: 80});
+  Object.defineProperty(viewport, "offsetHeight", {value: 300});
+  Object.defineProperty(viewport, "clientHeight", {value: 284});
+  window.dispatchEvent(new window.Event("resize"));
+  assert.equal(viewport.style.maxHeight, "328px");
+  toggle.click();
+  submit();
+  assert.equal(document.getElementById("row-details").hidden, true);
+  assert.equal(toggle.getAttribute("aria-expanded"), "false");
+  assert.equal(toggle.hidden, true);
+  respond(requests[1], data); await tick();
+  assert.equal(toggle.getAttribute("aria-expanded"), "false");
   window.close();
 });
 

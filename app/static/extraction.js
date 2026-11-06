@@ -7,9 +7,55 @@
   const status = byId("status");
   let submission = 0;
   let pending = null;
+  let expandedTable = false;
+  let selectedResult = null;
   const displayValue = (value) => value === null || value === undefined || value === "" ? "Missing" : String(value);
 
+  function fitTable() {
+    const viewport = byId("table-viewport");
+    const rows = [...byId("result-rows").rows];
+    if (expandedTable || rows.length <= 5) {
+      viewport.style.maxHeight = "none";
+      return;
+    }
+    const height = viewport.querySelector("thead").getBoundingClientRect().height
+      + rows.slice(0, 5).reduce((sum, row) => sum + row.getBoundingClientRect().height, 0)
+      + viewport.offsetHeight - viewport.clientHeight;
+    // Hidden sections have no geometry. Their next reveal/resize measures again.
+    if (height > 0) viewport.style.maxHeight = `${Math.ceil(height)}px`;
+  }
+
+  for (const view of ["both", "source", "results"]) {
+    byId(`view-${view}`).addEventListener("click", () => {
+      byId("extraction-panels").dataset.view = view;
+      byId("source-panel").hidden = view === "results";
+      byId("results-panel").hidden = view === "source";
+      for (const choice of ["both", "source", "results"]) {
+        byId(`view-${choice}`).setAttribute("aria-pressed", String(choice === view));
+      }
+      fitTable();
+    });
+  }
+
+  byId("table-size").addEventListener("click", () => {
+    expandedTable = !expandedTable;
+    byId("table-size").setAttribute("aria-expanded", String(expandedTable));
+    byId("table-size").textContent = expandedTable ? "Show five rows at a time" : "Expand table";
+    fitTable();
+  });
+  byId("back-to-row").addEventListener("click", () => selectedResult?.focus());
+  window.addEventListener("resize", fitTable);
+  if (typeof ResizeObserver !== "undefined") {
+    new ResizeObserver(fitTable).observe(byId("result-rows").closest("table"));
+  }
+
   function clearOutput() {
+    expandedTable = false;
+    selectedResult = null;
+    byId("table-size").hidden = true;
+    byId("table-size").setAttribute("aria-expanded", "false");
+    byId("table-size").textContent = "Expand table";
+    byId("table-viewport").style.maxHeight = "";
     byId("result-rows").replaceChildren();
     byId("details-list").replaceChildren();
     byId("rows-region").hidden = true;
@@ -21,6 +67,7 @@
   }
 
   function showDetails(row, button) {
+    selectedResult = button;
     const list = byId("details-list");
     list.replaceChildren();
     for (const other of byId("result-rows").querySelectorAll("button")) {
@@ -51,6 +98,7 @@
     }
     byId("row-details").hidden = false;
     status.textContent = `Showing unconfirmed details for ${row.analyte}, sample ${row.sample_id}.`;
+    byId("details-heading").focus();
   }
 
   function showResponse(data) {
@@ -81,6 +129,8 @@
       byId("result-rows").append(tr);
     }
     byId("rows-region").hidden = false;
+    byId("table-size").hidden = data.rows.length <= 5;
+    fitTable();
   }
 
   form.addEventListener("input", () => {
