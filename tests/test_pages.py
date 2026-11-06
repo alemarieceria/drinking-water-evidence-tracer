@@ -103,15 +103,17 @@ def test_rejects_changed_file_after_read(
 
 
 @pytest.mark.parametrize("name,count", [("DOC-0033-p6", 21), ("DOC-0003-p7", 35)])
-def test_stored_fixtures_are_reproducible_drafts(name: str, count: int) -> None:
+def test_stored_fixtures_are_reviewed_and_reproducible(name: str, count: int) -> None:
     folder = FIXTURES / name
     source = json.loads((folder / "source.json").read_text(encoding="utf-8"))
-    assert source["review"] == {
-        "status": "draft",
-        "reviewed_by": None,
-        "reviewed_at": None,
-        "inputs_sha256": None,
-    }
+    review = source["review"]
+    assert review["status"] == "reviewed"
+    assert review["reviewed_by"] == "A. Ceria"
+    assert review["reviewed_at"]
+    canonical = json.dumps(
+        source["inputs"], sort_keys=True, separators=(",", ":"), ensure_ascii=False
+    )
+    assert review["inputs_sha256"] == hashlib.sha256(canonical.encode()).hexdigest()
     for filename, digest in source["inputs"]["file_hashes"].items():
         data = (folder / filename).read_bytes()
         assert b"\r" not in data

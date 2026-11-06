@@ -6,30 +6,26 @@ defines the intended product; this map describes the code that exists today.
 
 ## What works today
 
-- **Implemented:** a page, JSON request/response models (definitions of the fields
-  exchanged with the page), and a numeric disagreement rule tested on its own.
-- **Implemented:** finding the version 1 source PDFs through the document archive's
-  catalog and checking that each file is unchanged. The page does not use them yet.
-- **Implemented in isolation:** reading fingerprint-checked PDF page text with the
-  fixed pdfplumber reader. Stored extraction fixtures have draft expected rows,
-  awaiting A. Ceria's source-PDF review; the page does not use them yet.
-- **Implemented in isolation:** interpreting detections/nondetects and checking
-  model-row source references; this does not prove completeness or correct sample attachment.
-- **Implemented in isolation:** bounded model calls with captured messages, explicit
-  gateway/model configuration, and a global offline-test guard. Live accuracy is unmeasured.
-- **Implemented:** `/extract` connects these steps, displays draft rows beside
-  source text, and saves atomic JSON run records, including failures.
-- **Placeholder:** every valid search returns the same HT03 lead example. The
-  displayed flags, source preview, and inventory are fixed demonstration content.
-- **Planned:** reading PDF contents, model extraction, record matching, unit conversion,
-  applying real flags, human-review actions, storage, and evidence export.
+- **Implemented:** `/extract` selects an archived document and two PDF pages,
+  checks the PDF fingerprint before/after reading, and uses the pinned text reader.
+- **Implemented:** bounded model extraction, source-line checks, raw field
+  preservation, nondetect interpretation, and unconfirmed row inspection.
+- **Implemented:** atomic local JSON run records and an explicitly invoked live
+  scorer that requires reviewed, unchanged fixtures. All pytest model calls are blocked.
+- **Placeholder:** `/` and `/trace` still show the fixed HT03 lead demonstration.
+- **Planned:** full-corpus processing, matching, unit conversion, real discrepancy
+  flags, human confirmation/correction, inventory integration, and evidence export.
 
-The [one-page extraction design](superpowers/specs/2026-10-29-page-extraction-design.md)
-describes the next experiment: one archived page, chosen by catalog ID, to
-unconfirmed model-extracted rows, with local run records and no retrieval or database.
-The [implementation plan](superpowers/plans/2026-11-05-page-extraction.md) is for
-review history is kept in Git; live scoring is still being implemented. The proposal's sections
-10 and 19 define its scope.
+The [design](superpowers/specs/2026-10-29-page-extraction-design.md) and
+[implementation plan](superpowers/plans/2026-11-05-page-extraction.md) define this
+experiment; proposal sections 10 and 19 define its scope. The two expected-row
+references were checked by A. Ceria; they cover captured environmental fields,
+not every report column or QC row. Live trial results belong in the feature PR,
+not a claim of accuracy across all five intended laboratory formats.
+
+Browser policy prevented live UI verification in this session. DOM tests check
+state handling and text rendering; real keyboard, zoom/reflow, and screen-reader
+checks remain pending. No accessibility-conformance claim is made.
 
 ## Current processing
 
@@ -46,6 +42,17 @@ flowchart TD
 The form sends the sample ID and analyte as JSON (structured text). The route checks
 the request's field types, builds a response using the declared models, and sends it
 back to the page. Search values do not select or process real evidence yet.
+
+### Separate extraction experiment
+
+At `/extract`, the researcher enters doc_id, results PDF page, and definitions
+PDF page. POST /extract creates a running record, reads fingerprint-checked text,
+checks the input limit, and calls the configured model. Python validates source
+references and interprets raw results. A usable response is saved and displayed
+as unconfirmed rows in source order, beside the text. Errors and unclear output
+return no rows; storage failure never presents success. Input changes and new
+submissions clear old output, and late responses cannot replace a newer request.
+A successful request does not establish completeness or field accuracy.
 
 ### The separate numeric rule
 
@@ -113,7 +120,7 @@ sections [10-11](proposal.md#10-llm-role), [14](proposal.md#14-human-review), an
 | [app/archive.py](../app/archive.py) | Finds source PDFs through the archive catalog and checks their fingerprints. |
 | [app/pages.py](../app/pages.py) | Reads the selected pages, preserving text and checking the fingerprint before and after reading. |
 | [app/extraction.py](../app/extraction.py) / [app/runs.py](../app/runs.py) | Orchestrates extraction and preserves versioned local run JSON, respectively. |
-| [tests/fixtures/extraction/](../tests/fixtures/extraction/) | Stored page text, reader settings and hashes, and explicitly draft expected rows for the two development inputs. |
+| [tests/fixtures/extraction/](../tests/fixtures/extraction/) | Stored page text, reader settings and hashes, and reviewed expected rows for the two development inputs. |
 | [data/v1_documents.txt](../data/v1_documents.txt) | Catalog IDs of the 27 version 1 PDFs, grouped by batch. |
 | [tests/test_skeleton.py](../tests/test_skeleton.py) | Page/form and endpoint field checks; real model requests are blocked. |
 | [tests/test_rules.py](../tests/test_rules.py) | Numeric mismatch and equality examples. |
@@ -154,6 +161,8 @@ pytest runs behavior checks. CI runs the same three commands. The current tests
 run without real model calls or the archive. The demonstration needs no credentials;
 `/extract` also requires ARCHIVE_ROOT, LLM_API_GATEWAY (an HTTP(S) API base URL),
 LLM_API_TOKEN, and an explicitly selected LLM_MODEL from the environment or local .env.
+Optional LLM_REASONING_EFFORT is recorded when supplied; the chosen GPT-6 Luna
+Chat baseline requires `none`. No model or reasoning choice is silently inferred.
 
 Frontend state tests use Node 22+ and a locked, development-only jsdom dependency:
 `npm ci --prefix tests/browser` then `npm test --prefix tests/browser`.
@@ -174,6 +183,19 @@ Extraction run files preserve source fingerprints, prompt/model identifiers,
 settings, captured outputs, and failures in gitignored `runs/`. An interrupted
 attempt remains marked running; it is not a success. Model reruns may vary.
 Keep secrets in the environment or ignored `.env` file, as required by AGENTS.md.
+
+## Live experiment
+
+With source access and model configuration ready, run
+`uv run python -m scripts.evaluate_extraction --live --fixture DOC-0033-p6`
+and repeat with `DOC-0003-p7`. The explicit flag is required. The scorer verifies
+review metadata, file hashes, PDF fingerprints, reader versions/options, and
+regenerated text before making a model request. It compares the eleven CSV
+fields exactly, matching sample/analyte/method plus occurrence; it reports missing
+and extra rows separately and checks order. Different method spellings can
+prevent a strict row match even if other values look correct. No overall passing
+accuracy threshold is chosen. Scores link to their run and reference hash in
+`runs/<uuid>.score.json`; source PDFs, tokens, and run artifacts are not committed.
 
 ## Decision record
 

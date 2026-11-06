@@ -16,7 +16,7 @@ from app.archive import (
     select_documents,
 )
 from app.models import ExtractionRequest, ExtractionResponse, RunRecord
-from app.pages import PageReadError, read_pages
+from app.pages import PagePair, PageReadError, read_pages
 from app.rules import UnclearExtraction, prepare_rows
 from app.runs import RunStorageError, save_run
 
@@ -89,6 +89,7 @@ class ExtractionService:
     archive_root: Path | None = None
     runs_root: Path = RUNS_ROOT
     model: Model | None = None
+    expected_pages: PagePair | None = None
 
     async def _process(self, record: RunRecord) -> None:
         request = record.request
@@ -98,6 +99,11 @@ class ExtractionService:
         )
         record.pages = pages
         await asyncio.to_thread(save_run, self.runs_root, record)
+        if self.expected_pages is not None and pages != self.expected_pages:
+            raise ExtractionFailure(
+                "reference_changed",
+                "The extraction input differs from the reviewed fixture; no model was called.",
+            )
         if len(pages.results_text) + len(pages.definitions_text) > MAX_INPUT_CHARACTERS:
             raise ExtractionFailure(
                 "input_too_large",

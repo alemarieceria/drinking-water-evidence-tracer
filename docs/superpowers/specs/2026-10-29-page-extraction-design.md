@@ -1,6 +1,6 @@
 # One-page laboratory result extraction
 
-**Planned, not implemented.** Build a small page that reads one archived report
+**Experiment scope.** Build a small page that reads one archived report
 page, sends its text to a model, and shows draft results beside that text. The
 final layout can change.
 
@@ -8,8 +8,8 @@ final layout can change.
 
 ![Planned flow: choose one archived page, extract its result rows, then inspect an unconfirmed table in page order; keep a local run record and explain failures.](../../assets/project/planned-page-extraction-flow.svg)
 
-*All steps and connections are planned. Unconfirmed means a person still needs
-to check the result.* [Full-size diagram](../../assets/project/planned-page-extraction-flow.svg)
+*Design reference: this diagram describes the intended flow. See the project map
+for implemented behavior and pending checks. Unconfirmed still requires human review.* [Full-size diagram](../../assets/project/planned-page-extraction-flow.svg)
 · [Editable source](../../assets/project/planned-page-extraction-flow.excalidraw)
 
 **Text equivalent:** You choose a document by its archive ID and a page number.
@@ -58,8 +58,8 @@ samples**, excluding nine surrogate recovery rows. All results stay unconfirmed.
 The PDF reader is pdfplumber 0.11.10 with layout mode and pdfminer.six 20260107.
 Exact request limits, file formats, function names, and module splits belong in
 the implementation plan. Document them there before building;
-update AGENTS.md and the project map if responsibilities move. No particular model
-is selected yet. Live runs need the Shared Drive (`ARCHIVE_ROOT`); tests do not.
+update AGENTS.md and the project map if responsibilities move. The initial live baseline is GPT-6 Luna with explicit reasoning effort none;
+the model remains configurable for later investigations. Live runs need the Shared Drive (`ARCHIVE_ROOT`); tests do not.
 
 **Out of scope:** PDF upload/viewing, search/filter/sort, RAG, a database,
 cross-checks, summary matching, inventory updates, confirmation/correction,
@@ -80,9 +80,8 @@ is from Zone A1, although the Navy filed it with the I1 release.
 
 The repository stores each fixture as extracted page text (margin
 numbers included), with the PDF library version that produced it, and a
-draft expected-rows file. A. Ceria must
-check the expected rows against the source PDF before they become the scoring
-reference. Each expected-rows file will list every row's sample ID, analyte,
+reviewed expected-rows file. A. Ceria checked the captured values against the
+source PDFs; changed reference inputs require another review. Each file lists every row's sample ID, analyte,
 result as written, qualifier, reporting limit (RL or MRL), MDL, and units. Tests
 use these stored files, never a neighboring checkout or the Shared Drive archive.
 

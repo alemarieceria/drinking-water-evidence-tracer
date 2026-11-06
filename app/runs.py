@@ -16,23 +16,33 @@ class RunStorageError(Exception):
 
 
 def save_run(root: Path, record: RunRecord) -> None:
+    _write_json(root / f"{record.run_id}.json", record.model_dump_json(indent=2))
+
+
+def save_score(root: Path, run_id: UUID, content: str) -> None:
+    if not isinstance(run_id, UUID):
+        raise RunStorageError("A valid run ID is required.")
+    _write_json(root / f"{run_id}.score.json", content)
+
+
+def _write_json(destination: Path, content: str) -> None:
     temporary: Path | None = None
     try:
-        root.mkdir(parents=True, exist_ok=True)
+        destination.parent.mkdir(parents=True, exist_ok=True)
         with tempfile.NamedTemporaryFile(
             mode="w",
             encoding="utf-8",
             newline="\n",
-            dir=root,
-            prefix=f".{record.run_id}.",
+            dir=destination.parent,
+            prefix=f".{destination.stem}.",
             suffix=".tmp",
             delete=False,
         ) as file:
             temporary = Path(file.name)
-            file.write(record.model_dump_json(indent=2))
+            file.write(content)
             file.flush()
             os.fsync(file.fileno())
-        os.replace(temporary, root / f"{record.run_id}.json")
+        os.replace(temporary, destination)
     except OSError:
         raise RunStorageError("The local run record could not be saved.") from None
     finally:

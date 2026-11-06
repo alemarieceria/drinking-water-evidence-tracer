@@ -24,9 +24,9 @@
     }
   },
   "review": {
-    "status": "draft",
-    "reviewed_by": null,
-    "reviewed_at": null,
-    "inputs_sha256": null
+    "status": "reviewed",
+    "reviewed_by": "A. Ceria",
+    "reviewed_at": "2026-11-06T09:26:51.864452+00:00",
+    "inputs_sha256": "fca794d11165d632e50a89baa6b3e9cb045e9057b9305a2c31af79b95696e4ad"
   }
 }
