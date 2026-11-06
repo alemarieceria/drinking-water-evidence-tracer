@@ -10,7 +10,9 @@ from app.runs import RunStorageError, load_run, save_run
 
 
 def record() -> RunRecord:
-    return RunRecord(request=ExtractionRequest(doc_id="DOC-0001", results_page=1, definitions_page=2))
+    return RunRecord(
+        request=ExtractionRequest(doc_id="DOC-0001", results_page=1, definitions_page=2)
+    )
 
 
 def test_run_round_trip_and_interrupted_state(tmp_path: Path) -> None:
@@ -26,11 +28,15 @@ def test_distinct_concurrent_runs_do_not_overwrite(tmp_path: Path) -> None:
     records = [record() for _ in range(3)]
     with ThreadPoolExecutor() as pool:
         list(pool.map(lambda item: save_run(tmp_path, item), records))
-    assert {load_run(tmp_path, item.run_id).run_id for item in records} == {item.run_id for item in records}
-    assert len(list(tmp_path.glob('*.json'))) == 3
+    assert {load_run(tmp_path, item.run_id).run_id for item in records} == {
+        item.run_id for item in records
+    }
+    assert len(list(tmp_path.glob("*.json"))) == 3
 
 
-def test_failed_atomic_replacement_preserves_original(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+def test_failed_atomic_replacement_preserves_original(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
     item = record()
     save_run(tmp_path, item)
     item.status = "error"
@@ -42,7 +48,7 @@ def test_failed_atomic_replacement_preserves_original(tmp_path: Path, monkeypatc
     with pytest.raises(RunStorageError):
         save_run(tmp_path, item)
     assert load_run(tmp_path, item.run_id).status == "running"
-    assert not list(tmp_path.glob('*.tmp'))
+    assert not list(tmp_path.glob("*.tmp"))
 
 
 def test_loading_never_accepts_arbitrary_path(tmp_path: Path) -> None:

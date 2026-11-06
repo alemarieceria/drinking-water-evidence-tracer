@@ -17,6 +17,8 @@ defines the intended product; this map describes the code that exists today.
   model-row source references; this does not prove completeness or correct sample attachment.
 - **Implemented in isolation:** bounded model calls with captured messages, explicit
   gateway/model configuration, and a global offline-test guard. Live accuracy is unmeasured.
+- **Implemented in isolation:** the extraction service connects these steps and
+  saves atomic JSON run records, including failures. Its routes are still planned.
 - **Placeholder:** every valid search returns the same HT03 lead example. The
   displayed flags, source preview, and inventory are fixed demonstration content.
 - **Planned:** reading PDF contents, model extraction, record matching, unit conversion,
@@ -109,6 +111,7 @@ sections [10-11](proposal.md#10-llm-role), [14](proposal.md#14-human-review), an
 | [app/rules.py](../app/rules.py) | Numeric disagreement, detection/nondetect interpretation, and source-reference checks. |
 | [app/archive.py](../app/archive.py) | Finds source PDFs through the archive catalog and checks their fingerprints. |
 | [app/pages.py](../app/pages.py) | Reads the selected pages, preserving text and checking the fingerprint before and after reading. |
+| [app/extraction.py](../app/extraction.py) / [app/runs.py](../app/runs.py) | Orchestrates extraction and preserves versioned local run JSON, respectively. |
 | [tests/fixtures/extraction/](../tests/fixtures/extraction/) | Stored page text, reader settings and hashes, and explicitly draft expected rows for the two development inputs. |
 | [data/v1_documents.txt](../data/v1_documents.txt) | Catalog IDs of the 27 version 1 PDFs, grouped by batch. |
 | [tests/test_skeleton.py](../tests/test_skeleton.py) | Page/form and endpoint field checks; real model requests are blocked. |
@@ -159,8 +162,9 @@ uv run python -m app.archive
 `--locked` makes dependency setup fail if the lockfile needs updating, rather than
 silently changing it. See [uv's sync documentation](https://docs.astral.sh/uv/concepts/projects/sync/).
 
-For future extraction, record source versions, prompt/model versions, settings,
-outputs, and reviewer corrections to make results traceable. Model reruns may vary.
+Extraction run files preserve source fingerprints, prompt/model identifiers,
+settings, captured outputs, and failures in gitignored `runs/`. An interrupted
+attempt remains marked running; it is not a success. Model reruns may vary.
 Keep secrets in the environment or ignored `.env` file, as required by AGENTS.md.
 
 ## Decision record

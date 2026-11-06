@@ -14,6 +14,9 @@ Drinking Water Evidence Tracer is a research tool that helps environmental resea
   archive catalog. No FastAPI, no LLM client.
 - app/pages.py: verifies PDF fingerprints and reads
   page text with the fixed reader. No FastAPI or model calls.
+- app/runs.py: atomic local JSON run-file storage.
+- app/extraction.py: connects archive lookup, page reading,
+  model extraction, rules, and run storage. No FastAPI.
 - This is the starting layout. When a module
   takes on a second responsibility, split it by
   responsibility (for example, `app/rules.py`

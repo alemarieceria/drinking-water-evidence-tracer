@@ -12,5 +12,8 @@ wheels/
 # Environment file
 .env
 
+# Local extraction evidence and experiment scores
+runs/
+
 # Lecture slides
 docs/_internal/
