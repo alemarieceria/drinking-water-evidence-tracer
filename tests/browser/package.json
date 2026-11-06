@@ -1,0 +1,7 @@
+{
+  "name": "water-evidence-page-tests",
+  "private": true,
+  "scripts": {"test": "node --test extraction_page.test.cjs"},
+  "engines": {"node": ">=22"},
+  "devDependencies": {"jsdom": "26.1.0"}
+}
