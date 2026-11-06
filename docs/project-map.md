@@ -107,7 +107,7 @@ sections [10-11](proposal.md#10-llm-role), [14](proposal.md#14-human-review), an
 | [.github/workflows/tests.yml](../.github/workflows/tests.yml) | Installs locked dependencies and runs lint, type checks, and tests in CI. |
 | [pyproject.toml](../pyproject.toml) / [uv.lock](../uv.lock) | Dependency declarations, locked versions, and check configuration. |
 | [AGENTS.md](../AGENTS.md) / [CLAUDE.md](../CLAUDE.md) | Shared contributor instructions; CLAUDE.md points to AGENTS.md. |
-| [.agents/skills/](../.agents/skills/README.md) | Implemented: 15 project-local Superpowers skills and their supporting files, with the upstream revision and license recorded. These guide coding agents; they are not application processing. |
+| [.agents/skills/](../.agents/skills/README.md) | Implemented: 15 upstream Superpowers skills plus the project-owned [evidence-review](../.agents/skills/evidence-review/SKILL.md) for read-only PR claim review. These guide coding agents; they are not application processing. Upstream revision and license are recorded in the skills overview. |
 | [docs/assets/proposal/](assets/proposal/) / [docs/assets/project/](assets/project/) | Proposal and system visuals with their editable sources. The extraction design's flow is explicitly planned; local trials stay outside the repository. |
 
 The root [main.py](../main.py) is the original greeting script. Start the web
