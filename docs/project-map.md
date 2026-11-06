@@ -13,6 +13,8 @@ defines the intended product; this map describes the code that exists today.
 - **Implemented in isolation:** reading fingerprint-checked PDF page text with the
   fixed pdfplumber reader. Stored extraction fixtures have draft expected rows,
   awaiting A. Ceria's source-PDF review; the page does not use them yet.
+- **Implemented in isolation:** interpreting detections/nondetects and checking
+  model-row source references; this does not prove completeness or correct sample attachment.
 - **Placeholder:** every valid search returns the same HT03 lead example. The
   displayed flags, source preview, and inventory are fixed demonstration content.
 - **Planned:** reading PDF contents, model extraction, record matching, unit conversion,
@@ -100,8 +102,9 @@ sections [10-11](proposal.md#10-llm-role), [14](proposal.md#14-human-review), an
 | File | Responsibility |
 | --- | --- |
 | [app/main.py](../app/main.py) | Web entry point: page, browser script, routes, and fixed response. |
-| [app/agent.py](../app/agent.py) | Input/output field models; no agent or model call is initialized. |
-| [app/rules.py](../app/rules.py) | Plain-Python evidence decisions; currently one numeric comparison. |
+| [app/agent.py](../app/agent.py) | Model-extraction boundary; not initialized yet. |
+| [app/models.py](../app/models.py) | Shared data contracts; raw numeric strings and unconfirmed review status. |
+| [app/rules.py](../app/rules.py) | Numeric disagreement, detection/nondetect interpretation, and source-reference checks. |
 | [app/archive.py](../app/archive.py) | Finds source PDFs through the archive catalog and checks their fingerprints. |
 | [app/pages.py](../app/pages.py) | Reads the selected pages, preserving text and checking the fingerprint before and after reading. |
 | [tests/fixtures/extraction/](../tests/fixtures/extraction/) | Stored page text, reader settings and hashes, and explicitly draft expected rows for the two development inputs. |

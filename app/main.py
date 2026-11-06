@@ -6,7 +6,7 @@ from decimal import Decimal
 from fastapi import FastAPI
 from fastapi.responses import HTMLResponse
 
-from app.agent import (
+from app.models import (
     DocumentMetadata,
     InventoryItem,
     Location,
