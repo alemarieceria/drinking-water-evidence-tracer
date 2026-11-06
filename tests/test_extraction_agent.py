@@ -188,3 +188,16 @@ async def test_sdk_has_no_hidden_retries_and_generic_profile() -> None:
         assert model.profile["openai_chat_supports_max_completion_tokens"] is False
     finally:
         await client.close()
+
+
+async def test_reasoning_effort_is_explicit_and_recorded() -> None:
+    selected = ModelConfig.model_validate({**config().model_dump(), "reasoning_effort": "none"})
+    model = CountingModel({"status": "extracted", "rows": [simple_row()]})
+    attempt = await extract_rows(simple_pages(), selected, model=model)
+    assert model.settings_seen["openai_reasoning_effort"] == "none"
+    assert attempt.public_config["reasoning_effort"] == "none"
+    live_model, client = build_model(selected)
+    try:
+        assert live_model.profile["openai_chat_supports_max_completion_tokens"] is True
+    finally:
+        await client.close()
