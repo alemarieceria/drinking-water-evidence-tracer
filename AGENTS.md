@@ -102,6 +102,12 @@ uv run pytest                    # run the tests
 - Before marking a PR ready, verify that tests pass, assumptions and limitations
   are visible, and documentation matches the change. Leave the owner's review
   pending so they can ask questions and explain the behavior in their own words.
+- Before marking a PR ready for owner review, use
+  [.agents/skills/evidence-review/SKILL.md](.agents/skills/evidence-review/SKILL.md)
+  to assess its behavior claims against the diff, tests, proposal, and project map.
+  Report each as supported, partly supported, or unsupported with file references;
+  distinguish offline TestModel evidence from live accuracy and human review.
+  This read-only review does not confirm results or replace the owner's review.
 
 ## Visual conventions and assets
 
