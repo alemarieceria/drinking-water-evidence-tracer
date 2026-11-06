@@ -23,8 +23,8 @@ unclear, it explains the problem without presenting a successful result list.
 | Step | What happens |
 | --- | --- |
 | Choose a page | Open the extraction page. Enter an archive document ID (such as `DOC-0033`), the PDF page number of a results page, and the PDF page number of its qualifier definitions. PDF page numbers can differ from the page labels printed in a report. |
-| Read the text | The app finds the PDF through the archive catalog, checks its fingerprint, and pulls the text of both pages with one fixed PDF library. Nothing is uploaded, and no PDF is displayed. |
-| Extract | Select **Extract page**. The app sends the page text and definitions to the configured model and shows progress. |
+| Read the text | The app finds the PDF through the archive catalog, checks its fingerprint, and pulls the text of both pages with one fixed PDF library. The PDF stays in the archive; it is neither uploaded nor displayed. |
+| Extract | Select **Extract page**. The app sends the extracted page text and definitions to the configured model service and shows progress. |
 | Inspect | See every returned environmental analyte row in page order, with the total count, beside the page text. Select a row for its limits, qualifier, sample IDs, and source excerpt. |
 
 For example, `DOC-0033` page 6 should return **21 analyte rows across three
@@ -77,9 +77,11 @@ These are development fixtures only: neither expands the proposal's version-one
 corpus. `DOC-0003` page 7 is also outside Zone I1: its sample, 20220104-A1-ZT03,
 is from Zone A1, although the Navy filed it with the I1 release.
 
-Each fixture is stored in the repository as its extracted page text (margin
+Implementation will store each fixture in the repository as extracted page text (margin
 numbers included), with the PDF library version that produced it, and a
-hand-checked expected-rows file. That file lists every row's sample ID, analyte,
+hand-checked expected-rows file. These files do not exist yet; A. Ceria must
+check the expected rows against the source PDF before they become the scoring
+reference. Each expected-rows file will list every row's sample ID, analyte,
 result as written, qualifier, reporting limit (RL or MRL), MDL, and units. Tests
 use these stored files, never a neighboring checkout or the Shared Drive archive.
 
@@ -91,6 +93,32 @@ A separately invoked live experiment reads the fixture pages from the archive,
 runs the configured model, and compares each returned row with the expected-rows
 file field by field. It reports matches per field, missing rows, and extra rows.
 Offline tests alone cannot establish extraction accuracy.
+
+## PDF library comparison
+
+**Recommendation for review, not an installed dependency:** pdfplumber 0.11.10,
+using `page.extract_text(layout=True)` with its default spacing settings and
+pdfminer.six 20260107. The trial used Windows and Python 3.14, both results pages
+and both definitions pages above, and three independent extractions per page
+and mode. Source fingerprints matched the archive catalog. Every tested mode
+returned identical text across its three runs; this does not establish model accuracy.
+
+| Library and mode | Observed result on these fixtures | Trade-off |
+| --- | --- | --- |
+| pdfplumber 0.11.10, plain and layout | Both kept 21 Eurofins and 35 Weck result rows on separate lines. Layout also preserved space for the blank MDL. Both definitions pages retained their qualifier text. | Recommended layout mode installs through uv on Windows without a separate text-extraction executable. The library is MIT licensed. |
+| pypdf 6.21.4, plain and layout | Plain retained the results but joined some fields and changed column order. Layout omitted the Eurofins table and definitions body; on Weck it joined dates to dilution factors. | BSD-3-Clause licensed, but these modes need more repair for these pages. |
+| PyMuPDF 2.1, `get_text("text", sort=True)` | Retained the results, but joined two Eurofins analyte rows onto one line. Weck's blank MDL remained visible. | AGPL/commercial licensing and additional row repair make this less suitable for this slice. |
+| Poppler 24.04.0, `pdftotext -layout -enc UTF-8` | Kept all 21 and 35 rows separately and preserved the blank MDL and qualifier definitions. | A good alternative, but requires a separately installed executable and version tracking beyond uv.lock. |
+
+Margin tabs remain in the recommended text, sometimes at the end of a result
+row and sometimes on their own line. pdfplumber's word coordinates distinguish
+the first Perylene-d12 dilution factor (`1`, x=577.99) from tab `10` (x=593.65),
+in PDF points. Do not remove trailing numbers by position in a text line alone.
+No cropping or cleanup was applied in this comparison. A. Ceria's fixture review
+and the separate live model experiment remain required. The implementation plan
+will record the approved library, exact settings, and locked dependency versions.
+See [pdfplumber's extraction documentation](https://github.com/jsvine/pdfplumber#extracting-text)
+for the tested layout API. Detailed trial evidence belongs in this change's PR.
 
 ## Why this approach, and what comes next
 
