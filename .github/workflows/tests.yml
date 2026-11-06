@@ -15,3 +15,9 @@ jobs:
       - run: uv run ruff check
       - run: uv run mypy
       - run: uv run pytest
+      - uses: actions/setup-node@v7
+        with:
+          node-version: '22'
+          package-manager-cache: false
+      - run: npm ci --prefix tests/browser
+      - run: npm test --prefix tests/browser

@@ -1,13 +1,20 @@
-"""HTTP routes and a basic page backed by a fixed demonstration response."""
+"""HTTP routes and presentation for the demonstration and extraction experiment."""
 
 from datetime import date
 from decimal import Decimal
+from pathlib import Path
+from typing import Annotated
 
-from fastapi import FastAPI
-from fastapi.responses import HTMLResponse
+from dotenv import load_dotenv
+from fastapi import Depends, FastAPI
+from fastapi.responses import FileResponse, HTMLResponse, JSONResponse
+from fastapi.staticfiles import StaticFiles
 
-from app.agent import (
+from app.extraction import ExtractionService
+from app.models import (
     DocumentMetadata,
+    ExtractionRequest,
+    ExtractionResponse,
     InventoryItem,
     Location,
     Result,
@@ -19,6 +26,45 @@ from app.agent import (
 )
 
 app = FastAPI(title="Drinking Water Evidence Tracer")
+APP_ROOT = Path(__file__).resolve().parent
+app.mount("/static", StaticFiles(directory=APP_ROOT / "static"), name="static")
+
+
+def get_extraction_service() -> ExtractionService:
+    load_dotenv(APP_ROOT.parent / ".env", override=False)
+    return ExtractionService()
+
+
+@app.get("/extract", response_class=FileResponse)
+def extraction_page() -> FileResponse:
+    return FileResponse(APP_ROOT / "extraction_page.html", media_type="text/html")
+
+
+@app.post("/extract", response_model=ExtractionResponse)
+async def extract_page(
+    request: ExtractionRequest,
+    service: Annotated[ExtractionService, Depends(get_extraction_service)],
+) -> JSONResponse:
+    result = await service.run(request)
+    codes = {
+        "unknown_document": 404,
+        "missing_file": 404,
+        "changed_file": 409,
+        "invalid_page": 422,
+        "unreadable_pdf": 422,
+        "empty_page": 422,
+        "missing_fingerprint": 422,
+        "input_too_large": 422,
+        "configuration_error": 503,
+        "storage_error": 503,
+        "archive_unavailable": 503,
+        "model_timeout": 504,
+        "model_failure": 502,
+        "extraction_failed": 500,
+    }
+    status = codes.get(result.error_code or "", 200)
+    return JSONResponse(status_code=status, content=result.model_dump(mode="json"))
+
 
 PAGE = """<!doctype html>
 <html lang="en">
@@ -57,6 +103,7 @@ PAGE = """<!doctype html>
 <body>
 <main>
   <h1>Drinking Water Evidence Tracer</h1>
+  <p><a href="/extract">Open the page-extraction experiment</a></p>
   <p class="notice">Skeleton demonstration: every search returns the same fixed
     HT03 lead example. Values and flags are placeholders for display.</p>
   <section aria-labelledby="search-heading">

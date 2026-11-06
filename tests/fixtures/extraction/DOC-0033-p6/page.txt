@@ -1,0 +1,65 @@
+                                                                                    
+                                                                                    
+                                Client Sample Results                             1 
+    Client: AECOM Technical Services Inc.                           Job ID: 810-12365-1
+    Project/Site: Red Hill                                                        2 
+                                                                                    
+    Client Sample ID: 220115-I1-AT01                       Lab Sample ID: 810-12365-1
+                                                                                  3 
+    Date Collected: 01/15/22 08:45                                Matrix: Drinking Water
+    Date Received: 01/18/22 11:00                                                   
+                                                                                  4 
+     Method: 525.2 - Semivolatile Organic Compounds (GC/MS)                         
+                                                                                  5 
+     Analyte                Result Qualifier RL MDL Unit  D  Prepared Analyzed Dil Fac
+     1-Methylnaphthalene    <0.020       0.098  0.020 ug/L  01/19/22 07:48 01/20/22 02:05 1
+     2-Methylnaphthalene    <0.020       0.098  0.020 ug/L  01/19/22 07:48 01/20/22 02:05 1 6
+     Benzo[a]pyrene        <0.0098       0.020 0.0098 ug/L  01/19/22 07:48 01/20/22 02:05 1
+     Di (2-ethylhexyl)phthalate <0.59     0.59  0.59 ug/L   01/19/22 07:48 01/20/22 02:05 1 7
+     Hexachlorobenzene     <0.0098       0.098 0.0098 ug/L  01/19/22 07:48 01/20/22 02:05 1
+     Hexachlorocyclopentadiene <0.0098   0.098 0.0098 ug/L  01/19/22 07:48 01/20/22 02:05 1 8
+     Naphthalene            <0.020       0.098  0.020 ug/L  01/19/22 07:48 01/20/22 02:05 1
+                                                                                  9 
+     Surrogate           %Recovery Qualifier Limits          Prepared Analyzed Dil Fac
+     2-Nitro-m-xylene        106       70-130               01/19/22 07:48 01/20/22 02:05 1
+                                                                                  10
+     Perylene-d12             96       70-130               01/19/22 07:48 01/20/22 02:05 1
+     Triphenylphosphate      113       70-130               01/19/22 07:48 01/20/22 02:05 1
+                                                                                  11
+    Client Sample ID: 220115-I1-FT04                       Lab Sample ID: 810-12365-2
+    Date Collected: 01/15/22 10:05                                Matrix: Drinking Water 12
+    Date Received: 01/18/22 11:00                                                   
+                                                                                  13
+     Method: 525.2 - Semivolatile Organic Compounds (GC/MS)                         
+     Analyte                Result Qualifier RL MDL Unit  D  Prepared Analyzed Dil Fac
+                                                                                  14
+     1-Methylnaphthalene    <0.020       0.099  0.020 ug/L  01/19/22 07:48 01/20/22 02:29 1
+     2-Methylnaphthalene    <0.020       0.099  0.020 ug/L  01/19/22 07:48 01/20/22 02:29 1
+                                                                                  15
+     Benzo[a]pyrene        <0.0099       0.020 0.0099 ug/L  01/19/22 07:48 01/20/22 02:29 1
+     Di (2-ethylhexyl)phthalate <0.59     0.59  0.59 ug/L   01/19/22 07:48 01/20/22 02:29 1
+     Hexachlorobenzene     <0.0099       0.099 0.0099 ug/L  01/19/22 07:48 01/20/22 02:29 1
+     Hexachlorocyclopentadiene <0.0099   0.099 0.0099 ug/L  01/19/22 07:48 01/20/22 02:29 1
+     Naphthalene            <0.020       0.099  0.020 ug/L  01/19/22 07:48 01/20/22 02:29 1
+     Surrogate           %Recovery Qualifier Limits          Prepared Analyzed Dil Fac
+     2-Nitro-m-xylene        106       70-130               01/19/22 07:48 01/20/22 02:29 1
+     Perylene-d12             93       70-130               01/19/22 07:48 01/20/22 02:29 1
+     Triphenylphosphate      116       70-130               01/19/22 07:48 01/20/22 02:29 1
+    Client Sample ID: 220115-I1-FT03                       Lab Sample ID: 810-12365-3
+    Date Collected: 01/15/22 08:00                                Matrix: Drinking Water
+    Date Received: 01/18/22 11:00                                                   
+     Method: 525.2 - Semivolatile Organic Compounds (GC/MS)                         
+     Analyte                Result Qualifier RL MDL Unit  D  Prepared Analyzed Dil Fac
+     1-Methylnaphthalene    <0.021        0.10  0.021 ug/L  01/19/22 07:48 01/20/22 02:54 1
+     2-Methylnaphthalene    <0.021        0.10  0.021 ug/L  01/19/22 07:48 01/20/22 02:54 1
+     Benzo[a]pyrene         <0.010       0.021  0.010 ug/L  01/19/22 07:48 01/20/22 02:54 1
+     Di (2-ethylhexyl)phthalate <0.63     0.63  0.63 ug/L   01/19/22 07:48 01/20/22 02:54 1
+     Hexachlorobenzene      <0.010        0.10  0.010 ug/L  01/19/22 07:48 01/20/22 02:54 1
+     Hexachlorocyclopentadiene <0.010     0.10  0.010 ug/L  01/19/22 07:48 01/20/22 02:54 1
+     Naphthalene            <0.021        0.10  0.021 ug/L  01/19/22 07:48 01/20/22 02:54 1
+     Surrogate           %Recovery Qualifier Limits          Prepared Analyzed Dil Fac
+     2-Nitro-m-xylene        102       70-130               01/19/22 07:48 01/20/22 02:54 1
+     Perylene-d12             89       70-130               01/19/22 07:48 01/20/22 02:54 1
+     Triphenylphosphate      117       70-130               01/19/22 07:48 01/20/22 02:54 1
+                                                                Eurofins Eaton South Bend
+                                      Page 6 of 20                        1/21/2022 

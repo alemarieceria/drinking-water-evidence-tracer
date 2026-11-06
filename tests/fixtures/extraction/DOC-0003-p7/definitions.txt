@@ -1,0 +1,60 @@
+                                                                                    
+                                                                                    
+                                                   Certificate     of Analysis      
+                                                                                    
+                                                                       FINAL REPORT 
+                                                                                    
+  AECOM - Honolulu                Project Number: 60674414, COC # 01042022DW-01 Reported:
+  1001 Bishop Street Suite 1600                                          01/10/2022 20:22
+  Honolulu, HI 96813             Project Manager: Margie Pascua                     
+      Notes and Definitions                              [TOC_1]Qualifiers and Definitions[TOC]
+                                                                                    
+  Item Definition                                                                   
+  BS-04 The recovery of this analyte in LCS or LCSD was outside control limit. Sample was accepted based on the remaining LCS, LCSD or LCS-LL.
+  J    Estimated conc. detected <MRL and >MDL.                                      
+  Q-02 Low recovery of this analyte in the QC sample. The analysis of the low level standard produced acceptable recovery indicating that the sample result
+       might be accurately reported as Not Detected.                                
+  S-11 Surrogate recovery outside of control limits. The data was accepted based on valid recovery of the remaining surrogate.
+  U    Analyte included in the analysis, but not detected                           
+  %REC Percent Recovery                                                             
+  Dil  Dilution                                                                     
+  MDL  Method Detection Limit                                                       
+  MRL  The minimum levels, concentrations, or quantities of a target variable (e.g., target analyte) that can be reported with a specified degree of confidence.
+       The MRL is also known as Limit of Quantitation (LOQ)                         
+  ND   NOT DETECTED at or above the Method Reporting Limit (MRL). If Method Detection Limit (MDL) is reported, then ND means not detected at or
+       above the MDL.                                                               
+  RPD  Relative Percent Difference                                                  
+  Source Sample that was matrix spiked or duplicated.                               
+  Any remaining sample(s) will be disposed of one month from the final report date unless other arrangements are made in advance.
+  All results are expressed on wet weight basis unless otherwise specified.         
+  All samples collected by Weck Laboratories have been sampled in accordance to laboratory SOP Number MIS002.
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+                                                                                    
+  2A05051                                                                   Page 16 of 16
+                       14859 Clark Avenue,City of Industry CA, 91745 | Phone: (626) 336-2139 | Fax: (626) 336-2634
+                                      www.wecklabs.com                              

@@ -6,21 +6,27 @@ defines the intended product; this map describes the code that exists today.
 
 ## What works today
 
-- **Implemented:** a page, JSON request/response models (definitions of the fields
-  exchanged with the page), and a numeric disagreement rule tested on its own.
-- **Implemented:** finding the version 1 source PDFs through the document archive's
-  catalog and checking that each file is unchanged. The page does not use them yet.
-- **Placeholder:** every valid search returns the same HT03 lead example. The
-  displayed flags, source preview, and inventory are fixed demonstration content.
-- **Planned:** reading PDF contents, model extraction, record matching, unit conversion,
-  applying real flags, human-review actions, storage, and evidence export.
+- **Implemented:** `/extract` selects an archived document and two PDF pages,
+  checks the PDF fingerprint before/after reading, and uses the pinned text reader.
+- **Implemented:** bounded model extraction, source-line checks, raw field
+  preservation, nondetect interpretation, and unconfirmed row inspection.
+- **Implemented:** atomic local JSON run records and an explicitly invoked live
+  scorer that requires reviewed, unchanged fixtures. All pytest model calls are blocked.
+- **Placeholder:** `/` and `/trace` still show the fixed HT03 lead demonstration.
+- **Planned:** full-corpus processing, matching, unit conversion, real discrepancy
+  flags, human confirmation/correction, inventory integration, and evidence export.
 
-The [one-page extraction design](superpowers/specs/2026-10-29-page-extraction-design.md)
-describes the next experiment: one archived page, chosen by catalog ID, to
-unconfirmed model-extracted rows, with local run records and no retrieval or database.
-The [implementation plan](superpowers/plans/2026-11-05-page-extraction.md) is for
-review; none of its extraction behavior is implemented. The proposal's sections
-10 and 19 define its scope.
+The [design](superpowers/specs/2026-10-29-page-extraction-design.md) and
+[implementation plan](superpowers/plans/2026-11-05-page-extraction.md) define this
+experiment; proposal sections 10 and 19 define its scope. The two expected-row
+references were checked by A. Ceria; they cover captured environmental fields,
+not every report column or QC row. Live trial results belong in the feature PR,
+not a claim of accuracy across all five intended laboratory formats.
+
+DOM tests check state handling and text rendering. The owner reports manual Tab
+traversal and supplied screenshots at 100% and 200% zoom. Keyboard activation,
+complete zoom/reflow behavior, and screen-reader checks remain pending.
+No accessibility-conformance claim is made.
 
 ## Current processing
 
@@ -37,6 +43,24 @@ flowchart TD
 The form sends the sample ID and analyte as JSON (structured text). The route checks
 the request's field types, builds a response using the declared models, and sends it
 back to the page. Search values do not select or process real evidence yet.
+
+### Separate extraction experiment
+
+At `/extract`, the researcher enters doc_id, results PDF page, and definitions
+PDF page. POST /extract creates a running record, reads fingerprint-checked text,
+checks the input limit, and calls the configured model. Python validates source
+references and interprets raw results. A usable response is saved and displayed
+as unconfirmed rows in source order, beside the text. Errors and unclear output
+return no rows; storage failure never presents success. Input changes and new
+submissions clear old output, and late responses cannot replace a newer request.
+A successful request does not establish completeness or field accuracy.
+
+Layout controls show both sections or either section at full width. The results
+table measures its first five rows to set a scrollable height, retaining all rows
+and sticky column headings; an expand control removes that height limit. Resizing
+or changing the layout recalculates the compact height. Details opens above the
+table and receives heading focus; Back to selected result returns to its button.
+New attempts clear details and reset the table size, preserving the chosen layout.
 
 ### The separate numeric rule
 
@@ -70,7 +94,8 @@ of the file changes). [`app/archive.py`](../app/archive.py) reads that catalog:
 
 `uv run python -m app.archive` runs these steps for the version 1 set and prints
 `27 documents found in ...; all files present and unchanged.` or a list of problems.
-Nothing reads the PDFs' contents yet.
+The separate page reader can read selected PDF pages; the current demonstration
+route does not use it.
 
 ## Intended processing and remaining work
 
@@ -96,9 +121,14 @@ sections [10-11](proposal.md#10-llm-role), [14](proposal.md#14-human-review), an
 | File | Responsibility |
 | --- | --- |
 | [app/main.py](../app/main.py) | Web entry point: page, browser script, routes, and fixed response. |
-| [app/agent.py](../app/agent.py) | Input/output field models; no agent or model call is initialized. |
-| [app/rules.py](../app/rules.py) | Plain-Python evidence decisions; currently one numeric comparison. |
+| [app/extraction_page.html](../app/extraction_page.html) / [app/static/extraction.js](../app/static/extraction.js) | Separate extraction page, plain-text rendering, row details, and stale-response protection. |
+| [app/agent.py](../app/agent.py) | Bounded model extraction and captured messages; initialized only for an extraction request. |
+| [app/models.py](../app/models.py) | Shared data contracts; raw numeric strings and unconfirmed review status. |
+| [app/rules.py](../app/rules.py) | Numeric disagreement, detection/nondetect interpretation, and source-reference checks. |
 | [app/archive.py](../app/archive.py) | Finds source PDFs through the archive catalog and checks their fingerprints. |
+| [app/pages.py](../app/pages.py) | Reads the selected pages, preserving text and checking the fingerprint before and after reading. |
+| [app/extraction.py](../app/extraction.py) / [app/runs.py](../app/runs.py) | Orchestrates extraction and preserves versioned local run JSON, respectively. |
+| [tests/fixtures/extraction/](../tests/fixtures/extraction/) | Stored page text, reader settings and hashes, and reviewed expected rows for the two development inputs. |
 | [data/v1_documents.txt](../data/v1_documents.txt) | Catalog IDs of the 27 version 1 PDFs, grouped by batch. |
 | [tests/test_skeleton.py](../tests/test_skeleton.py) | Page/form and endpoint field checks; real model requests are blocked. |
 | [tests/test_rules.py](../tests/test_rules.py) | Numeric mismatch and equality examples. |
@@ -136,7 +166,16 @@ uv run pytest
 
 Ruff checks code quality; mypy checks declared types (currently scoped to `app/`);
 pytest runs behavior checks. CI runs the same three commands. The current tests
-run without real model calls or the archive. The current app needs no API credentials.
+run without real model calls or the archive. The demonstration needs no credentials;
+`/extract` also requires ARCHIVE_ROOT, LLM_API_GATEWAY (an HTTP(S) API base URL),
+LLM_API_TOKEN, and an explicitly selected LLM_MODEL from the environment or local .env.
+Optional LLM_REASONING_EFFORT is recorded when supplied; the chosen GPT-6 Luna
+Chat baseline requires `none`. No model or reasoning choice is silently inferred.
+
+Frontend state tests use Node 22+ and a locked, development-only jsdom dependency:
+`npm ci --prefix tests/browser` then `npm test --prefix tests/browser`.
+CI runs these tests too. They verify stale/error handling and text rendering;
+they do not establish visual layout, keyboard, zoom, or screen-reader behavior.
 
 To check the source PDFs, copy the `ARCHIVE_ROOT` line from
 [.env.example](../.env.example) into `.env`, adjust the path if your Shared Drive
@@ -148,9 +187,23 @@ uv run python -m app.archive
 `--locked` makes dependency setup fail if the lockfile needs updating, rather than
 silently changing it. See [uv's sync documentation](https://docs.astral.sh/uv/concepts/projects/sync/).
 
-For future extraction, record source versions, prompt/model versions, settings,
-outputs, and reviewer corrections to make results traceable. Model reruns may vary.
+Extraction run files preserve source fingerprints, prompt/model identifiers,
+settings, captured outputs, and failures in gitignored `runs/`. An interrupted
+attempt remains marked running; it is not a success. Model reruns may vary.
 Keep secrets in the environment or ignored `.env` file, as required by AGENTS.md.
+
+## Live experiment
+
+With source access and model configuration ready, run
+`uv run python -m scripts.evaluate_extraction --live --fixture DOC-0033-p6`
+and repeat with `DOC-0003-p7`. The explicit flag is required. The scorer verifies
+review metadata, file hashes, PDF fingerprints, reader versions/options, and
+regenerated text before making a model request. It compares the eleven CSV
+fields exactly, matching sample/analyte/method plus occurrence; it reports missing
+and extra rows separately and checks order. Different method spellings can
+prevent a strict row match even if other values look correct. No overall passing
+accuracy threshold is chosen. Scores link to their run and reference hash in
+`runs/<uuid>.score.json`; source PDFs, tokens, and run artifacts are not committed.
 
 ## Decision record
 
@@ -163,7 +216,7 @@ choices are documented in the proposal and merged PRs:
 | Keep domain decisions in plain Python, separate from model extraction, so tests can check them exactly. | The caller must handle extraction, matching, and applying decisions. | Proposal section 10; [first rule PR](https://github.com/alemarieceria/drinking-water-evidence-tracer/pull/3). |
 | Start with a fixed response to establish the page and data shapes. | Displayed data is illustrative until real processing is connected. | [Skeleton commit](https://github.com/alemarieceria/drinking-water-evidence-tracer/commit/653447a). |
 | Find source PDFs through the document archive's catalog, keeping one fingerprinted copy with its source and download time. The alternative considered was hand-copied PDFs in `data/reports/v1/`, which had no recorded source or fingerprint and duplicated the archive. | Checking real files needs the Shared Drive available; tests use a temporary catalog. The catalog's `duplicate_of` column decides which copy is processed. | [Archive catalog PR #12](https://github.com/alemarieceria/drinking-water-evidence-tracer/pull/12). |
-| Use pdfplumber 0.11.10 layout mode with pdfminer.six 20260107 for planned extraction. It kept both fixture tables readable and retained the blank MDL. pypdf's tested modes lost or joined fields, PyMuPDF joined rows and has AGPL/commercial licensing, and Poppler needs a separate executable. | Not installed in the app yet. Pin reader versions/settings; preserve margin tabs and investigate model accuracy separately. | [Library comparison and owner acceptance, PR #13](https://github.com/alemarieceria/drinking-water-evidence-tracer/pull/13); [design comparison](superpowers/specs/2026-10-29-page-extraction-design.md#pdf-library-comparison). |
+| Use pdfplumber 0.11.10 layout mode with pdfminer.six 20260107 for extraction. It kept both fixture tables readable and retained the blank MDL. pypdf's tested modes lost or joined fields, PyMuPDF joined rows and has AGPL/commercial licensing, and Poppler needs a separate executable. | Reader installed and tested in isolation. Pin reader versions/settings; preserve margin tabs and investigate model accuracy separately. | [Library comparison and owner acceptance, PR #13](https://github.com/alemarieceria/drinking-water-evidence-tracer/pull/13); [design comparison](superpowers/specs/2026-10-29-page-extraction-design.md#pdf-library-comparison). |
 
 Update this map when capabilities, connections, setup, or responsibilities change.
 Keep detailed requirements in the proposal and change-specific reasoning in PRs.

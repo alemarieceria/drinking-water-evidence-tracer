@@ -5,11 +5,24 @@ Drinking Water Evidence Tracer is a research tool that helps environmental resea
 
 ## Layout
 - app/main.py: routes and the page. No business rules.
-- app/agent.py: the Pydantic AI agent and output model.
+- app/extraction_page.html and app/static/extraction.js:
+  extraction presentation and browser state; no evidence rules.
+- app/agent.py: bounded Pydantic AI page extraction.
+- app/models.py: shared request, response, extraction,
+  and run-record data contracts. No model calls.
 - app/rules.py: rules in plain Python. No FastAPI,
   no LLM client.
 - app/archive.py: finds source PDFs through the
   archive catalog. No FastAPI, no LLM client.
+- app/pages.py: verifies PDF fingerprints and reads
+  page text with the fixed reader. No FastAPI or model calls.
+- app/runs.py: atomic local JSON run-file storage.
+- app/evaluation.py: exact field scoring against reference rows;
+  no model calls or file access.
+- scripts/evaluate_extraction.py: explicit live experiment entry point;
+  binds the model input to the reviewed fixture before scoring.
+- app/extraction.py: connects archive lookup, page reading,
+  model extraction, rules, and run storage. No FastAPI.
 - This is the starting layout. When a module
   takes on a second responsibility, split it by
   responsibility (for example, `app/rules.py`

@@ -12,5 +12,11 @@ wheels/
 # Environment file
 .env
 
+# Local extraction evidence and experiment scores
+runs/
+
+# Development-only DOM test dependencies
+node_modules/
+
 # Lecture slides
 docs/_internal/

@@ -1,0 +1,32 @@
+{
+  "inputs": {
+    "doc_id": "DOC-0003",
+    "title": "Laboratory Reports for Zone I1 Stage 2, 24 January 2022",
+    "source_url": "https://www.cpf.navy.mil/Portals/52/Downloads/JBPHH-Water-Updates/2022-01-24-flushing-zone-i1-lab-reports-stage-2-data-release.pdf",
+    "results_page": 7,
+    "definitions_page": 16,
+    "reader_versions": {
+      "pdfplumber": "0.11.10",
+      "pdfminer.six": "20260107"
+    },
+    "extraction_options": {
+      "layout": true,
+      "x_tolerance": 3,
+      "y_tolerance": 3,
+      "x_density": 7.25,
+      "y_density": 13
+    },
+    "pdf_sha256": "571653ce6b4a13c2f314f81d50bbc314d663786f126d6942ec36175dd3bbdc01",
+    "file_hashes": {
+      "page.txt": "c73963798614888a9c1d780b06293cbd5987f6126c67fd976ea682dcebaff456",
+      "definitions.txt": "378072da094ff01d97b15221790f5217375d3d1765f26e539ee37c8f022ff19e",
+      "expected_rows.csv": "4d2744afcb85e7c1d97ecbd8e0f059fe4df188e52d18b42a866f8aa7b4038e3e"
+    }
+  },
+  "review": {
+    "status": "reviewed",
+    "reviewed_by": "A. Ceria",
+    "reviewed_at": "2026-11-06T09:26:51.863242+00:00",
+    "inputs_sha256": "5015c36b16f49388761ea0b3fcc18b70b0e1d704d32253a32fd5ae13bc73ab88"
+  }
+}
