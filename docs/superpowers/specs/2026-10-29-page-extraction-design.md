@@ -1,6 +1,6 @@
 # One-page laboratory result extraction
 
-**Proposed, not implemented.** Build a small page that reads one archived report
+**Planned, not implemented.** Build a small page that reads one archived report
 page, sends its text to a model, and shows draft results beside that text. The
 final layout can change.
 
@@ -44,7 +44,7 @@ samples**, excluding nine surrogate recovery rows. All results stay unconfirmed.
 - Errors preserve the user's input and never make old or partial output look
   current. A returned row count does not prove extraction is complete or correct.
 
-## Choices proposed for your review
+## Design choices
 
 | Choice | Why |
 | --- | --- |
@@ -55,8 +55,9 @@ samples**, excluding nine surrogate recovery rows. All results stay unconfirmed.
 | Model extracts; Python interprets; people confirm later | Keep evidence rules separate from model calls and presentation. Page text is data, not instructions. |
 | Bounded requests; explicit server-side model configuration | Avoid unlimited retries and hidden model choices. Credentials never reach browser output or run records. |
 
-Exact request limits, file formats, function names, the PDF library, and module
-splits belong in the implementation plan. Document them there before building;
+The PDF reader is pdfplumber 0.11.10 with layout mode and pdfminer.six 20260107.
+Exact request limits, file formats, function names, and module splits belong in
+the implementation plan. Document them there before building;
 update AGENTS.md and the project map if responsibilities move. No particular model
 is selected yet. Live runs need the Shared Drive (`ARCHIVE_ROOT`); tests do not.
 
@@ -96,7 +97,7 @@ Offline tests alone cannot establish extraction accuracy.
 
 ## PDF library comparison
 
-**Recommendation for review, not an installed dependency:** pdfplumber 0.11.10,
+**Selected library, not yet an application dependency:** pdfplumber 0.11.10,
 using `page.extract_text(layout=True)` with its default spacing settings and
 pdfminer.six 20260107. The trial used Windows and Python 3.14, both results pages
 and both definitions pages above, and three independent extractions per page
@@ -105,12 +106,12 @@ returned identical text across its three runs; this does not establish model acc
 
 | Library and mode | Observed result on these fixtures | Trade-off |
 | --- | --- | --- |
-| pdfplumber 0.11.10, plain and layout | Both kept 21 Eurofins and 35 Weck result rows on separate lines. Layout also preserved space for the blank MDL. Both definitions pages retained their qualifier text. | Recommended layout mode installs through uv on Windows without a separate text-extraction executable. The library is MIT licensed. |
+| pdfplumber 0.11.10, plain and layout | Both kept 21 Eurofins and 35 Weck result rows on separate lines. Layout also preserved space for the blank MDL. Both definitions pages retained their qualifier text. | Selected layout mode installs through uv on Windows without a separate text-extraction executable. The library is MIT licensed. |
 | pypdf 6.21.4, plain and layout | Plain retained the results but joined some fields and changed column order. Layout omitted the Eurofins table and definitions body; on Weck it joined dates to dilution factors. | BSD-3-Clause licensed, but these modes need more repair for these pages. |
 | PyMuPDF 2.1, `get_text("text", sort=True)` | Retained the results, but joined two Eurofins analyte rows onto one line. Weck's blank MDL remained visible. | AGPL/commercial licensing and additional row repair make this less suitable for this slice. |
 | Poppler 24.04.0, `pdftotext -layout -enc UTF-8` | Kept all 21 and 35 rows separately and preserved the blank MDL and qualifier definitions. | A good alternative, but requires a separately installed executable and version tracking beyond uv.lock. |
 
-Margin tabs remain in the recommended text, sometimes at the end of a result
+Margin tabs remain in the selected library's text, sometimes at the end of a result
 row and sometimes on their own line. pdfplumber's word coordinates distinguish
 the first Perylene-d12 dilution factor (`1`, x=577.99) from tab `10` (x=593.65),
 in PDF points. Do not remove trailing numbers by position in a text line alone.
@@ -126,6 +127,6 @@ We chose **one-page extraction** to establish the page-to-model connection first
 Two-page cross-checking adds matching work; validation-narrative extraction tests
 a different problem. Both remain later options, as do search, filter, and sort.
 
-After design review, write and review the implementation plan, then build and
-verify the feature. The [proposal's sections 10 and 19](../../proposal.md#10-llm-role)
+Review the [implementation plan](../plans/2026-11-05-page-extraction.md), then build
+and verify the feature. The [proposal's sections 10 and 19](../../proposal.md#10-llm-role)
 define the project scope; this document describes only this change.

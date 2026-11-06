@@ -15,10 +15,12 @@ defines the intended product; this map describes the code that exists today.
 - **Planned:** reading PDF contents, model extraction, record matching, unit conversion,
   applying real flags, human-review actions, storage, and evidence export.
 
-The [proposed one-page extraction design](superpowers/specs/2026-10-29-page-extraction-design.md)
+The [one-page extraction design](superpowers/specs/2026-10-29-page-extraction-design.md)
 describes the next experiment: one archived page, chosen by catalog ID, to
-unconfirmed model-extracted rows, with local run records and no retrieval or database. It is a design for review,
-not implemented behavior. The proposal's sections 10 and 19 define its scope.
+unconfirmed model-extracted rows, with local run records and no retrieval or database.
+The [implementation plan](superpowers/plans/2026-11-05-page-extraction.md) is for
+review; none of its extraction behavior is implemented. The proposal's sections
+10 and 19 define its scope.
 
 ## Current processing
 
@@ -160,7 +162,8 @@ choices are documented in the proposal and merged PRs:
 | --- | --- | --- |
 | Keep domain decisions in plain Python, separate from model extraction, so tests can check them exactly. | The caller must handle extraction, matching, and applying decisions. | Proposal section 10; [first rule PR](https://github.com/alemarieceria/drinking-water-evidence-tracer/pull/3). |
 | Start with a fixed response to establish the page and data shapes. | Displayed data is illustrative until real processing is connected. | [Skeleton commit](https://github.com/alemarieceria/drinking-water-evidence-tracer/commit/653447a). |
-| Find source PDFs through the document archive's catalog, keeping one fingerprinted copy with its source and download time. The alternative considered was hand-copied PDFs in `data/reports/v1/`, which had no recorded source or fingerprint and duplicated the archive. | Checking real files needs the Shared Drive available; tests use a temporary catalog. The catalog's `duplicate_of` column decides which copy is processed. | Archive catalog PR (this change). |
+| Find source PDFs through the document archive's catalog, keeping one fingerprinted copy with its source and download time. The alternative considered was hand-copied PDFs in `data/reports/v1/`, which had no recorded source or fingerprint and duplicated the archive. | Checking real files needs the Shared Drive available; tests use a temporary catalog. The catalog's `duplicate_of` column decides which copy is processed. | [Archive catalog PR #12](https://github.com/alemarieceria/drinking-water-evidence-tracer/pull/12). |
+| Use pdfplumber 0.11.10 layout mode with pdfminer.six 20260107 for planned extraction. It kept both fixture tables readable and retained the blank MDL. pypdf's tested modes lost or joined fields, PyMuPDF joined rows and has AGPL/commercial licensing, and Poppler needs a separate executable. | Not installed in the app yet. Pin reader versions/settings; preserve margin tabs and investigate model accuracy separately. | [Library comparison and owner acceptance, PR #13](https://github.com/alemarieceria/drinking-water-evidence-tracer/pull/13); [design comparison](superpowers/specs/2026-10-29-page-extraction-design.md#pdf-library-comparison). |
 
 Update this map when capabilities, connections, setup, or responsibilities change.
 Keep detailed requirements in the proposal and change-specific reasoning in PRs.
